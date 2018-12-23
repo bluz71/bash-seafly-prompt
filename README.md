@@ -16,7 +16,7 @@ git clone --depth 1 https://github.com/bluz71/bash-seafly-prompt ~/.bash-seafly-
 Source the *seafly* prompt script in your `~/.bashrc`:
 
 ```sh
-. ~/.bash-seafly-prompt/command-prompt.sh
+. ~/.bash-seafly-prompt/command_prompt.bash
 ```
 
 Note, to update to the latest version of *seafly*:
