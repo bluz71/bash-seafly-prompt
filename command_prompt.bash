@@ -4,19 +4,6 @@
 #
 # URL:     github.com/bluz71/dotfiles
 # License: MIT (https://opensource.org/licenses/MIT)
-#
-# Environment variable customizations (set to any non-empty value):
-# 
-# - SEAFLY_PRE_COMMAND
-# - GIT_PS1_SHOWDIRTYSTATE, indicate staged and unstaged modifications
-# - GIT_PS1_SHOWSTASHSTATE, indicate precense of stash(es)
-# - GIT_PS1_SHOWUPSTREAM, indicate upstream and downstream changes
-#
-# Note, computing Git dirty state can be expensive. If GIT_PS1_SHOWDIRTYSTATE
-# is set but you want to disable the dirty indicator on a per-repository
-# basis then please set the following repository configuration:
-#
-#  % git config bash.showDirtyState false
 
 
 _interactive_terminal=0
@@ -49,11 +36,11 @@ fi
 if [ -z "$SEAFLY_PROMPT_SYMBOL" ]; then
     SEAFLY_PROMPT_SYMBOL="❯"
 fi
-if [ -z "$SEAFLY_GIT_LEFT_DELIM" ]; then
-    SEAFLY_GIT_LEFT_DELIM=""
+if [ -z "$SEAFLY_GIT_PREFIX" ]; then
+    SEAFLY_GIT_PREFIX=""
 fi
-if [ -z "$SEAFLY_GIT_RIGHT_DELIM" ]; then
-    SEAFLY_GIT_RIGHT_DELIM=""
+if [ -z "$SEAFLY_GIT_SUFFIX" ]; then
+    SEAFLY_GIT_SUFFIX=""
 fi
 if [ -z "$SEAFLY_GIT_DIRTY" ]; then
     SEAFLY_GIT_DIRTY="✗"
@@ -129,7 +116,7 @@ _command_prompt()
             spacer=" "
         fi
 
-        git_details=" $SEAFLY_GIT_LEFT_DELIM$branch$spacer\[$RED\]$dirty\[$BLUE\]$staged\[$BLUE\]$upstream\[$PURPLE\]$stash$SEAFLY_GIT_RIGHT_DELIM"
+        git_details=" $SEAFLY_GIT_PREFIX$branch$spacer\[$RED\]$dirty\[$BLUE\]$staged\[$BLUE\]$upstream\[$PURPLE\]$stash$SEAFLY_GIT_SUFFIX"
     fi
 
     # Blue ❯ indicates that the last command ran successfully.
