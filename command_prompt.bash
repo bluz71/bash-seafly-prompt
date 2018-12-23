@@ -45,6 +45,35 @@ if [ -z "$PROMPT_DIRTRIM" ]; then
     PROMPT_DIRTRIM=4
 fi
 
+# Symbols used in the prompt.
+if [ -z "$SEAFLY_PROMPT_SYMBOL" ]; then
+    SEAFLY_PROMPT_SYMBOL="❯"
+fi
+if [ -z "$SEAFLY_GIT_LEFT_DELIM" ]; then
+    SEAFLY_GIT_LEFT_DELIM=""
+fi
+if [ -z "$SEAFLY_GIT_RIGHT_DELIM" ]; then
+    SEAFLY_GIT_RIGHT_DELIM=""
+fi
+if [ -z "$SEAFLY_GIT_DIRTY" ]; then
+    SEAFLY_GIT_DIRTY="✗"
+fi
+if [ -z "$SEAFLY_GIT_STAGED" ]; then
+    SEAFLY_GIT_STAGED="✓"
+fi
+if [ -z "$SEAFLY_GIT_STASH" ]; then
+    SEAFLY_GIT_STASH="⚑"
+fi
+if [ -z "$SEAFLY_GIT_AHEAD" ]; then
+    SEAFLY_GIT_AHEAD="↑"
+fi
+if [ -z "$SEAFLY_GIT_BEHIND" ]; then
+    SEAFLY_GIT_BEHIND="↓"
+fi
+if [ -z "$SEAFLY_GIT_DIVERGED" ]; then
+    SEAFLY_GIT_DIVERGED="↕"
+fi
+
 _command_prompt()
 {
     # Run a pre-command if set.
@@ -70,13 +99,13 @@ _command_prompt()
         if [ "$branch" != "detached*" ] &&
            [ "$GIT_PS1_SHOWDIRTYSTATE" != 0 ] &&
            [ "$(git config --bool bash.showDirtyState)" != "false" ]; then
-            git diff --no-ext-diff --quiet --exit-code --ignore-submodules 2>/dev/null || dirty="✗"
-            git diff --no-ext-diff --quiet --cached --exit-code --ignore-submodules 2>/dev/null || staged="✓"
+            git diff --no-ext-diff --quiet --exit-code --ignore-submodules 2>/dev/null || dirty=$SEAFLY_GIT_DIRTY
+            git diff --no-ext-diff --quiet --cached --exit-code --ignore-submodules 2>/dev/null || staged=$SEAFLY_GIT_STAGED
         fi
 
         local stash=""
         if [ "$GIT_PS1_SHOWSTASHSTATE" != 0 ]; then
-            git rev-parse --verify --quiet refs/stash >/dev/null && stash="⚑"
+            git rev-parse --verify --quiet refs/stash >/dev/null && stash=$SEAFLY_GIT_STASH
         fi
 
         local upstream=""
@@ -87,11 +116,11 @@ _command_prompt()
             "0	0") # equal to upstream
                 upstream="=" ;;
             "0	"*) # behind upstream
-                upstream="↓" ;;
+                upstream=$SEAFLY_GIT_BEHIND ;;
             *"	0") # ahead of upstream
-                upstream="↑" ;;
+                upstream=$SEAFLY_GIT_AHEAD ;;
             *)	    # diverged from upstream
-                upstream="↕" ;;
+                upstream=$SEAFLY_GIT_DIVERGED ;;
             esac
         fi
 
@@ -100,12 +129,12 @@ _command_prompt()
             spacer=" "
         fi
 
-        git_details=" |$branch$spacer\[$RED\]$dirty\[$BLUE\]$staged\[$BLUE\]$upstream\[$PURPLE\]$stash|"
+        git_details=" $SEAFLY_GIT_LEFT_DELIM$branch$spacer\[$RED\]$dirty\[$BLUE\]$staged\[$BLUE\]$upstream\[$PURPLE\]$stash$SEAFLY_GIT_RIGHT_DELIM"
     fi
 
     # Blue ❯ indicates that the last command ran successfully.
     # Red ❯ indicates that the last command failed.
-    local prompt_end="\$(if [ \$? = 0 ]; then echo \[\$BLUE\]; else echo \[\$RED\]; fi) ❯\[\$NOCOLOR\] "
+    local prompt_end="\$(if [ \$? = 0 ]; then echo \[\$BLUE\]; else echo \[\$RED\]; fi) $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
 
     PS1="\[$WHITE\]\h\[$PURPLE\]$git_details\[$GREEN\] \w$prompt_end"
 }
