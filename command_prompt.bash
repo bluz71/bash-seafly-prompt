@@ -39,6 +39,12 @@ if [ $_interactive_terminal = 1 ] && [ $_color_terminal = 1 ]; then
     NOCOLOR="$(tput sgr0)"
 fi
 
+# Shorten directory paths to a maximum of four components unless PROMPT_DIRTRIM
+# has already been set.
+if [ -z "$PROMPT_DIRTRIM" ]; then
+    PROMPT_DIRTRIM=4
+fi
+
 _command_prompt()
 {
     # Run a pre-command if set.
