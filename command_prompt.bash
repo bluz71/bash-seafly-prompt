@@ -7,7 +7,7 @@
 #
 # Environment variable customizations (set to any non-empty value):
 # 
-# - PROMPT_PRE_COMMAND
+# - SEAFLY_PRE_COMMAND
 # - GIT_PS1_SHOWDIRTYSTATE, indicate staged and unstaged modifications
 # - GIT_PS1_SHOWSTASHSTATE, indicate precense of stash(es)
 # - GIT_PS1_SHOWUPSTREAM, indicate upstream and downstream changes
@@ -19,18 +19,18 @@
 #  % git config bash.showDirtyState false
 
 
-interactive_terminal=0
+_interactive_terminal=0
 if [[ "$-" =~ i ]]; then
-    interactive_terminal=1
+    _interactive_terminal=1
 fi
 
-color_terminal=0
+_color_terminal=0
 if [ "$TERM" = "xterm-256color" ] || [ "$TERM" = "screen-256color" ]; then
-    color_terminal=1
+    _color_terminal=1
 fi
 
 # Colors used in the prompt.
-if [ $interactive_terminal = 1 ] && [ $color_terminal = 1 ]; then
+if [ $_interactive_terminal = 1 ] && [ $_color_terminal = 1 ]; then
     BLUE="$(tput setaf 111)"
     PURPLE="$(tput setaf 147)"
     GREEN="$(tput setaf 150)"
@@ -39,15 +39,15 @@ if [ $interactive_terminal = 1 ] && [ $color_terminal = 1 ]; then
     NOCOLOR="$(tput sgr0)"
 fi
 
-command_prompt()
+_command_prompt()
 {
     # Run a pre-command if set.
-    if [ -n "$PROMPT_PRE_COMMAND" ]; then
-        eval $PROMPT_PRE_COMMAND
+    if [ -n "$SEAFLY_PRE_COMMAND" ]; then
+        eval $SEAFLY_PRE_COMMAND
     fi
 
     # Set a simple prompt for non-interactive or non-color terminals.
-    if [ $interactive_terminal = 0 ] || [ $color_terminal = 0 ]; then
+    if [ $_interactive_terminal = 0 ] || [ $_color_terminal = 0 ]; then
         PS1='\h \w > '
         return
     fi
@@ -104,5 +104,5 @@ command_prompt()
     PS1="\[$WHITE\]\h\[$PURPLE\]$git_details\[$GREEN\] \w$prompt_end"
 }
 
-# Bind the command_prompt function as the Bash prompt.
-PROMPT_COMMAND=command_prompt
+# Bind the '_command_prompt' function as the Bash prompt.
+PROMPT_COMMAND=_command_prompt
