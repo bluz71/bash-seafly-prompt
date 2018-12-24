@@ -24,18 +24,18 @@ Layout
 segments:
 
 ```
-<Host> <Git Branch> <Git Indicators> <Path> <Prompt Symbol>
+<Host> <Git Branch> <Git Indicators> <Current Path> <Prompt Symbol>
 ```
 
 Behaviour
 ---------
 
-* When in a Git repository the Git branch will be displayed.
+* When in a Git repository the checked out Git branch will be displayed.
 
-* When in a Git repository dirty state, upstream and stash indicators will be
+* When in a Git repository, dirty state, upstream and stash indicators will be
     displayed. Note, these can individually be disabled if desired.
 
-* Prompt symbol will change to an alert color (by default red) if the last
+* The prompt symbol will change to an alert color (by default red) if the last
     command did not execute successfully.
 
 Visuals
@@ -62,7 +62,7 @@ Please also make sure the `TERM` environment variable is set to either
 Setting `TERM` to `xterm-256color` is usually done at the terminal level
 either in a preferences dialog or a related configuation file, if required at
 all. Note, some modern terminals will automatically set 256 colors by default,
-for instance, modern versions of [Gnome
+for example, modern versions of [Gnome
 Terminal](https://wiki.gnome.org/Apps/Terminal).
 
 Setting `TERM` to `screen-256color` should only be done for
@@ -109,6 +109,7 @@ Note, a dash character denotes an unset default value.
 | Option | Description | Default Value
 |--------|-------------|--------------
 | **`SEAFLY_PRE_COMMAND`** | A command to run each time the prompt is displayed.<br>For example `history -a`.<br>Please make sure any pre-command is very fast. | -
+| **`PROMPT_DIRTRIM`** | Shorten the current directory path to a set number of components.<br>Set to `0` to not shorten the current path. | 4
 | **`GIT_PS1_SHOWDIRTYSTATE`** | Indicate the presence of Git modifications.<br>Set to `0` to skip. | 1
 | **`GIT_PS1_SHOWSTASHSTATE`** | Indicate the presence of Git stashes.<br>Set to `0` to skip. | 1
 | **`GIT_PS1_SHOWUPSTREAM`** | Indicate differences exist between HEAD and upstream in a Git remote-tracking branch.<br>Set to `0` to skip. | 1
