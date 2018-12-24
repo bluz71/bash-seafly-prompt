@@ -1,8 +1,6 @@
-# A colorful Bash prompt.
+# A modern, informative and configurable command prompt for the Bash shell.
 #
-# Note: Inspiration taken from: Pure Zsh theme and Bash Git Prompt
-#
-# URL:     github.com/bluz71/dotfiles
+# URL:     github.com/bluz71/bash-seafly-prompt
 # License: MIT (https://opensource.org/licenses/MIT)
 
 
