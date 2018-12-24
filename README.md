@@ -1,7 +1,7 @@
 seafly
 ======
 
-*seafly* is a modern and informative command prompt for the
+*seafly* is a modern, informative and configurable command prompt for the
 [Bash](https://www.gnu.org/software/bash) shell.
 
 Inspiration provided by:
@@ -13,14 +13,43 @@ Inspiration provided by:
 Screenshot
 ----------
 
-Todo
+<img width="800" alt="seafly" src="https://raw.githubusercontent.com/bluz71/misc-binaries/master/seafly/seafly.png">
 
-Layout & Behaviour
-------------------
+The font in use is [Iosevka](https://github.com/be5invis/Iosevka).
 
-Todo.
+Layout
+------
 
-Red prompt symbol and blue prompt symbol.
+*seafly* is a single line prompt that is divided into the following five
+segments:
+
+```
+<Host> <Git Branch> <Git Indicators> <Path> <Prompt Symbol>
+```
+
+Behaviour
+---------
+
+* When in a Git repository the Git branch will be displayed.
+
+* When in a Git repository dirty state, upstream and stash indicators will be
+    displayed. Note, these can individually be disabled if desired.
+
+* Prompt symbol will change to an alert color (by default red) if the last
+    command did not execute successfully.
+
+Visuals
+-------
+
+*seafly* by default will use Unicode characters for the prompt symbol and
+certain Git indicators. These symbols will display correctly using modern fonts
+such as [Hack](https://github.com/source-foundry/Hack) or
+[Iosevka](https://github.com/be5invis/Iosevka).
+
+Also, *seafly* by default will use colors that favour a dark background.
+
+Both the symbols and colors used by *seafly* can be overridden, please refer to
+the configuration section below.
 
 Requirements
 ------------
@@ -44,11 +73,6 @@ please add the following to your `~/.tmux.conf` file:
 set -g default-terminal "screen-256color"
 set -ga terminal-overrides ',xterm-256color:Tc'
 ```
-
-Recommendation
---------------
-
-Todo: a modern font.
 
 Installation
 ------------
@@ -78,7 +102,7 @@ Configuration
 Certain behaviours and visuals of the *seafly* prompt can be controlled
 through environment variables.
 
-Note, '-' denotes an unset value.
+Note, a dash character denotes an unset default value.
 
 ### Behaviour
 
@@ -105,8 +129,8 @@ can do the following to skip dirty-state indication on a per-repository basis:
 | Option | Description | Default Value
 |--------|-------------|--------------
 | **`SEAFLY_PROMPT_SYMBOL`** | The prompt symbol | ❯
-| **`SEAFLY_GIT_PREFIX`** | Left-side delimiter symbol of the Git prompt section | -
-| **`SEAFLY_GIT_SUFFIX`** | Right-side delimiter symbol of the Git prompt section | -
+| **`SEAFLY_GIT_PREFIX_SYMBOL`** | Symbol to the left of the Git branch | -
+| **`SEAFLY_GIT_SUFFIX_SYMBOL`** | Symbol to the right of the Git indicators | -
 | **`SEAFLY_GIT_DIRTY`** | Symbol indicating that a Git repository contains modifications | ✗
 | **`SEAFLY_GIT_STAGED`** | Symbol indicating that a Git repository contains staged changes | ✓
 | **`SEAFLY_GIT_STASH`** | Symbol indicating that a Git repository contains one or more stashes | ⚑
