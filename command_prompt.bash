@@ -16,11 +16,11 @@ fi
 
 # Colors used in the prompt.
 if [ $_interactive_terminal = 1 ] && [ $_color_terminal = 1 ]; then
-    BLUE="$(tput setaf 111)"
-    PURPLE="$(tput setaf 147)"
-    GREEN="$(tput setaf 150)"
-    RED="$(tput setaf 203)"
-    WHITE="$(tput setaf 255)"
+    SEAFLY_NORMAL_COLOR="$(tput setaf 111)"
+    SEAFLY_GIT_COLOR="$(tput setaf 147)"
+    SEAFLY_PATH_COLOR="$(tput setaf 150)"
+    SEAFLY_ALERT_COLOR="$(tput setaf 203)"
+    SEAFLY_HOST_COLOR="$(tput setaf 255)"
     NOCOLOR="$(tput sgr0)"
 fi
 
@@ -113,14 +113,14 @@ _command_prompt()
         if [ -n "$dirty" ] || [ -n "$staged" ] || [ -n "$stash" ] || [ -n "$upstream" ]; then
             spacer=" "
         fi
-        git_details=" $SEAFLY_GIT_PREFIX_SYMBOL$branch$spacer\[$RED\]$dirty\[$BLUE\]$staged\[$BLUE\]$upstream\[$PURPLE\]$stash$SEAFLY_GIT_SUFFIX_SYMBOL"
+        git_details=" $SEAFLY_GIT_PREFIX_SYMBOL$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX_SYMBOL"
     fi
 
-    # Blue ❯ indicates that the last command ran successfully.
-    # Red ❯ indicates that the last command failed.
-    local prompt_end="\$(if [ \$? = 0 ]; then echo \[\$BLUE\]; else echo \[\$RED\]; fi) $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
+    # Normal prompt indicates that the last command ran successfully.
+    # Alert prompt indicates that the last command failed.
+    local prompt_end="\$(if [ \$? = 0 ]; then echo \[\$SEAFLY_NORMAL_COLOR\]; else echo \[\$SEAFLY_ALERT_COLOR\]; fi) $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
 
-    PS1="\[$WHITE\]\h\[$PURPLE\]$git_details\[$GREEN\] \w$prompt_end"
+    PS1="\[$SEAFLY_HOST_COLOR\]\h\[$SEAFLY_GIT_COLOR\]$git_details\[$SEAFLY_PATH_COLOR\] \w$prompt_end"
 }
 
 # Bind the '_command_prompt' function as the Bash prompt.
