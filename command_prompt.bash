@@ -44,11 +44,11 @@ fi
 if [ -z "$SEAFLY_PROMPT_SYMBOL" ]; then
     SEAFLY_PROMPT_SYMBOL="❯"
 fi
-if [ -z "$SEAFLY_GIT_PREFIX_SYMBOL" ]; then
-    SEAFLY_GIT_PREFIX_SYMBOL=""
+if [ -z "$SEAFLY_GIT_PREFIX" ]; then
+    SEAFLY_GIT_PREFIX=""
 fi
-if [ -z "$SEAFLY_GIT_SUFFIX_SYMBOL" ]; then
-    SEAFLY_GIT_SUFFIX_SYMBOL=""
+if [ -z "$SEAFLY_GIT_SUFFIX" ]; then
+    SEAFLY_GIT_SUFFIX=""
 fi
 if [ -z "$SEAFLY_GIT_DIRTY" ]; then
     SEAFLY_GIT_DIRTY="✗"
@@ -123,7 +123,7 @@ _command_prompt()
         if [ -n "$dirty" ] || [ -n "$staged" ] || [ -n "$stash" ] || [ -n "$upstream" ]; then
             spacer=" "
         fi
-        git_details=" $SEAFLY_GIT_PREFIX_SYMBOL$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX_SYMBOL"
+        git_details=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
     fi
 
     # Normal prompt indicates that the last command ran successfully.

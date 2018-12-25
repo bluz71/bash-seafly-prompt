@@ -20,7 +20,7 @@ The font in use is [Iosevka](https://github.com/be5invis/Iosevka).
 Layout
 ------
 
-*seafly* is a single line prompt that is divided into the following five
+*seafly* is a single line prompt that is divided in to the following five
 segments:
 
 ```
@@ -35,14 +35,14 @@ Behaviour
 * When in a Git repository, dirty state, upstream and stash indicators will be
     displayed. Note, these can individually be disabled if desired.
 
-* The prompt symbol will change to an alert color (by default red) if the last
+* The prompt symbol will change to an alert color, by default red, if the last
     command did not execute successfully.
 
 Visuals
 -------
 
 *seafly* by default will use Unicode characters for the prompt symbol and
-certain Git indicators. These symbols will display correctly using modern fonts
+certain Git indicators. These symbols will display correctly in modern fonts
 such as [Hack](https://github.com/source-foundry/Hack) or
 [Iosevka](https://github.com/be5invis/Iosevka).
 
@@ -59,8 +59,8 @@ will:
 
 ```sh
 SEAFLY_PROMPT_SYMBOL=">"
-SEAFLY_GIT_PREFIX_SYMBOL="("
-SEAFLY_GIT_SUFFIX_SYMBOL=")"
+SEAFLY_GIT_PREFIX="("
+SEAFLY_GIT_SUFFIX=")"
 SEAFLY_GIT_DIRTY="*"
 SEAFLY_GIT_STASH="?"
 SEAFLY_GIT_AHEAD=">"
@@ -83,7 +83,7 @@ Please also make sure the `TERM` environment variable is set to either
 `xterm-256color` or `screen-256color`.
 
 Setting `TERM` to `xterm-256color` is usually done at the terminal level
-either in a preferences dialog or a related configuation file, if required at
+either in a preferences dialog or a related configuration file, if required at
 all. Note, some modern terminals will automatically set 256 colors by default,
 for example, modern versions of [Gnome
 Terminal](https://wiki.gnome.org/Apps/Terminal).
@@ -132,7 +132,7 @@ Note, a dash character denotes an unset default value.
 | Option | Description | Default Value
 |--------|-------------|--------------
 | **`SEAFLY_PRE_COMMAND`** | A command to run each time the prompt is displayed.<br>For example `history -a`.<br>Please make sure any pre-command is very fast. | -
-| **`PROMPT_DIRTRIM`** | Shorten the current directory path to a set number of components.<br>Set to `0` to not shorten the current path. | 4
+| **`PROMPT_DIRTRIM`** | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path. | 4
 | **`GIT_PS1_SHOWDIRTYSTATE`** | Indicate the presence of Git modifications.<br>Set to `0` to skip. | 1
 | **`GIT_PS1_SHOWSTASHSTATE`** | Indicate the presence of Git stashes.<br>Set to `0` to skip. | 1
 | **`GIT_PS1_SHOWUPSTREAM`** | Indicate differences exist between HEAD and upstream in a Git remote-tracking branch.<br>Set to `0` to skip. | 1
@@ -153,8 +153,8 @@ can do the following to skip dirty-state indication on a per-repository basis:
 | Option | Description | Default Value
 |--------|-------------|--------------
 | **`SEAFLY_PROMPT_SYMBOL`** | The prompt symbol | ❯
-| **`SEAFLY_GIT_PREFIX_SYMBOL`** | Symbol to the left of the Git branch | -
-| **`SEAFLY_GIT_SUFFIX_SYMBOL`** | Symbol to the right of the Git indicators | -
+| **`SEAFLY_GIT_PREFIX`** | Symbol to the left of the Git branch | -
+| **`SEAFLY_GIT_SUFFIX`** | Symbol to the right of the Git indicators | -
 | **`SEAFLY_GIT_DIRTY`** | Symbol indicating that a Git repository contains modifications | ✗
 | **`SEAFLY_GIT_STAGED`** | Symbol indicating that a Git repository contains staged changes | ✓
 | **`SEAFLY_GIT_STASH`** | Symbol indicating that a Git repository contains one or more stashes | ⚑
