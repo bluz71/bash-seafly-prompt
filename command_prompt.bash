@@ -16,11 +16,21 @@ fi
 
 # Colors used in the prompt.
 if [ $_interactive_terminal = 1 ] && [ $_color_terminal = 1 ]; then
-    SEAFLY_NORMAL_COLOR="$(tput setaf 111)"
-    SEAFLY_GIT_COLOR="$(tput setaf 147)"
-    SEAFLY_PATH_COLOR="$(tput setaf 150)"
-    SEAFLY_ALERT_COLOR="$(tput setaf 203)"
-    SEAFLY_HOST_COLOR="$(tput setaf 255)"
+    if [ -z "$SEAFLY_NORMAL_COLOR" ]; then
+        SEAFLY_NORMAL_COLOR="$(tput setaf 111)"
+    fi
+    if [ -z "$SEAFLY_ALERT_COLOR" ]; then
+        SEAFLY_ALERT_COLOR="$(tput setaf 203)"
+    fi
+    if [ -z "$SEAFLY_HOST_COLOR" ]; then
+        SEAFLY_HOST_COLOR="$(tput setaf 255)"
+    fi
+    if [ -z "$SEAFLY_GIT_COLOR" ]; then
+        SEAFLY_GIT_COLOR="$(tput setaf 147)"
+    fi
+    if [ -z "$SEAFLY_PATH_COLOR" ]; then
+        SEAFLY_PATH_COLOR="$(tput setaf 150)"
+    fi
     NOCOLOR="$(tput sgr0)"
 fi
 
