@@ -49,7 +49,30 @@ such as [Hack](https://github.com/source-foundry/Hack) or
 Also, *seafly* by default will use colors that favour a dark background.
 
 Both the symbols and colors used by *seafly* can be overridden, please refer to
-the configuration section below.
+the configuration section below. As an example, the following configuration
+will:
+
+- only use ASCII characters
+- use colors appropriate for a light terminal theme
+- style the Git section to mimic
+    [`$(__git_ps1)`](https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh)
+
+```sh
+SEAFLY_PROMPT_SYMBOL=">"
+SEAFLY_GIT_PREFIX_SYMBOL="("
+SEAFLY_GIT_SUFFIX_SYMBOL=")"
+SEAFLY_GIT_DIRTY="*"
+SEAFLY_GIT_STASH="?"
+SEAFLY_GIT_AHEAD=">"
+SEAFLY_GIT_BEHIND="<"
+SEAFLY_GIT_DIVERGED="<>"
+SEAFLY_NORMAL_COLOR="$(tput setaf 63)"
+SEAFLY_ALERT_COLOR="$(tput setaf 202)"
+SEAFLY_HOST_COLOR="$(tput setaf 242)"
+SEAFLY_GIT_COLOR="$(tput setaf 99)"
+SEAFLY_PATH_COLOR="$(tput setaf 70)"
+. ~/.bash-seafly-prompt/command_prompt.bash
+```
 
 Requirements
 ------------
