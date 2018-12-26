@@ -131,6 +131,7 @@ _command_prompt()
     local prompt_end="\$(if [ \$? = 0 ]; then echo \[\$SEAFLY_NORMAL_COLOR\]; else echo \[\$SEAFLY_ALERT_COLOR\]; fi) $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
 
     PS1="\[$SEAFLY_HOST_COLOR\]\h\[$SEAFLY_GIT_COLOR\]$git_details\[$SEAFLY_PATH_COLOR\] \w$prompt_end"
+    PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
 }
 
 # Bind the '_command_prompt' function as the Bash prompt.
