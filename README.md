@@ -20,7 +20,7 @@ The font in use is [Iosevka](https://github.com/be5invis/Iosevka).
 Layout
 ------
 
-*seafly* is a single line prompt that is divided in to the following five
+*seafly* is a single line prompt that is divided into the following five
 segments:
 
 ```
