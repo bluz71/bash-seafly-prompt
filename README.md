@@ -140,8 +140,8 @@ Note, a dash character denotes an unset default value.
 | Option | Description | Default Value
 |--------|-------------|--------------
 | **`SEAFLY_PRE_COMMAND`** | A command to run each time the prompt is displayed.<br>For example `history -a`.<br>Please make sure any pre-command is very fast. | -
-| **`SEAFLY_SHOW_USER`** | Display the current user in the host segment.<br>Set to `1` to display the user | 0
-| **`SEAFLY_LAYOUT`** | Specify the preferred layout.<br>Layout `1` will display Git details followd by path.<br>Layout `2` will flip the Git details and path | 1
+| **`SEAFLY_SHOW_USER`** | Display the current user in the host segment.<br>Set to `1` to display the user. | 0
+| **`SEAFLY_LAYOUT`** | Specify the preferred layout.<br>Layout `1` will display Git details followed by path.<br>Layout `2` will flip the Git details and path. | 1
 | **`PROMPT_DIRTRIM`** | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path. | 4
 | **`GIT_PS1_SHOWDIRTYSTATE`** | Indicate the presence of Git modifications.<br>Set to `0` to skip. | 1
 | **`GIT_PS1_SHOWSTASHSTATE`** | Indicate the presence of Git stashes.<br>Set to `0` to skip. | 1
