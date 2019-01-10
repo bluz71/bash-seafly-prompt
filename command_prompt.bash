@@ -40,6 +40,14 @@ if [[ -z $PROMPT_DIRTRIM ]]; then
     PROMPT_DIRTRIM=4
 fi
 
+if [[ -z $SEAFLY_SHOW_USER ]]; then
+    SEAFLY_SHOW_USER=0
+fi
+
+if [[ -z $SEAFLY_LAYOUT ]]; then
+    SEAFLY_LAYOUT=1
+fi
+
 # Symbols used in the prompt.
 if [[ -z $SEAFLY_PROMPT_SYMBOL ]]; then
     SEAFLY_PROMPT_SYMBOL="❯"
@@ -82,15 +90,15 @@ _command_prompt()
         return
     fi
 
-    local git_details=""
+    local git_details
     if [[ $(git rev-parse --is-inside-work-tree --is-bare-repository 2>/dev/null) =~ true ]]; then
         local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
         if [[ $branch = "HEAD" ]]; then
             branch="detached*$(git rev-parse --short HEAD 2>/dev/null)"
         fi
 
-        local dirty=""
-        local staged=""
+        local dirty
+        local staged
         if [[ $branch != "detached*" &&
               $GIT_PS1_SHOWDIRTYSTATE != 0 &&
               $(git config --bool bash.showDirtyState) != "false" ]]; then
@@ -98,12 +106,12 @@ _command_prompt()
             git diff --no-ext-diff --quiet --cached --exit-code --ignore-submodules 2>/dev/null || staged=$SEAFLY_GIT_STAGED
         fi
 
-        local stash=""
+        local stash
         if [[ $GIT_PS1_SHOWSTASHSTATE != 0 ]]; then
             git rev-parse --verify --quiet refs/stash >/dev/null && stash=$SEAFLY_GIT_STASH
         fi
 
-        local upstream=""
+        local upstream
         if [[ $GIT_PS1_SHOWUPSTREAM != 0 ]]; then
             case "$(git rev-list --left-right --count HEAD...@'{u}' 2>/dev/null)" in
             "") # no upstream
@@ -119,18 +127,31 @@ _command_prompt()
             esac
         fi
 
-        local spacer=""
+        local spacer
         if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
             spacer=" "
         fi
         git_details=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
     fi
 
+    local prompt_start
+    if [[ $SEAFLY_SHOW_USER = 1 ]]; then
+        prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h"
+    else
+        prompt_start="\[$SEAFLY_HOST_COLOR\]\h"
+    fi
+
     # Normal prompt indicates that the last command ran successfully.
     # Alert prompt indicates that the last command failed.
     local prompt_end="\$(if [[ \$? = 0 ]]; then echo \[\$SEAFLY_NORMAL_COLOR\]; else echo \[\$SEAFLY_ALERT_COLOR\]; fi) $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
 
-    PS1="\[$SEAFLY_HOST_COLOR\]\h\[$SEAFLY_GIT_COLOR\]$git_details\[$SEAFLY_PATH_COLOR\] \w$prompt_end"
+    local prompt_middle
+    if [[ $SEAFLY_LAYOUT = 1 ]]; then
+        prompt_middle="\[$SEAFLY_GIT_COLOR\]$git_details\[$SEAFLY_PATH_COLOR\] \w"
+    else
+        prompt_middle="\[$SEAFLY_PATH_COLOR\] \w\[$SEAFLY_GIT_COLOR\]$git_details"
+    fi
+    PS1="$prompt_start$prompt_middle$prompt_end"
     PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
 }
 
