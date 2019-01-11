@@ -134,6 +134,14 @@ _command_prompt()
         git_details=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
     fi
 
+    local prompt_prefix
+    if [[ -n $SEAFLY_PROMPT_PREFIX ]]; then
+        local prefix_value=$(eval $SEAFLY_PROMPT_PREFIX)
+        if [[ -n $prefix_value ]]; then
+            prompt_prefix="\[$SEAFLY_NORMAL_COLOR\]$prefix_value "
+        fi
+    fi
+
     local prompt_start
     if [[ $SEAFLY_SHOW_USER = 1 ]]; then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h"
@@ -141,17 +149,18 @@ _command_prompt()
         prompt_start="\[$SEAFLY_HOST_COLOR\]\h"
     fi
 
-    # Normal prompt indicates that the last command ran successfully.
-    # Alert prompt indicates that the last command failed.
-    local prompt_end="\$(if [[ \$? = 0 ]]; then echo \[\$SEAFLY_NORMAL_COLOR\]; else echo \[\$SEAFLY_ALERT_COLOR\]; fi) $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
-
     local prompt_middle
     if [[ $SEAFLY_LAYOUT = 1 ]]; then
         prompt_middle="\[$SEAFLY_GIT_COLOR\]$git_details\[$SEAFLY_PATH_COLOR\] \w"
     else
         prompt_middle="\[$SEAFLY_PATH_COLOR\] \w\[$SEAFLY_GIT_COLOR\]$git_details"
     fi
-    PS1="$prompt_start$prompt_middle$prompt_end"
+
+    # Normal prompt indicates that the last command ran successfully.
+    # Alert prompt indicates that the last command failed.
+    local prompt_end="\$(if [[ \$? = 0 ]]; then echo \[\$SEAFLY_NORMAL_COLOR\]; else echo \[\$SEAFLY_ALERT_COLOR\]; fi) $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
+
+    PS1="$prompt_prefix$prompt_start$prompt_middle$prompt_end"
     PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
 }
 
