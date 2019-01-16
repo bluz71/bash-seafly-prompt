@@ -16,6 +16,9 @@ fi
 
 # Colors used in the prompt.
 if [[ $_interactive_terminal = 1 && $_color_terminal = 1 ]]; then
+    if [[ -z $SEAFLY_PREFIX_COLOR ]]; then
+        SEAFLY_PREFIX_COLOR=$(tput setaf 180)
+    fi
     if [[ -z $SEAFLY_NORMAL_COLOR ]]; then
         SEAFLY_NORMAL_COLOR=$(tput setaf 111)
     fi
@@ -141,7 +144,7 @@ _command_prompt()
     if [[ -n $SEAFLY_PROMPT_PREFIX ]]; then
         local prefix_value=$(eval $SEAFLY_PROMPT_PREFIX)
         if [[ -n $prefix_value ]]; then
-            prompt_prefix="\[$SEAFLY_NORMAL_COLOR\]$prefix_value "
+            prompt_prefix="\[$SEAFLY_PREFIX_COLOR\]$prefix_value "
         fi
     fi
 

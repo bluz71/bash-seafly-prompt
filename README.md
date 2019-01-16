@@ -184,9 +184,10 @@ chart](https://jonasjacek.github.io/colors) when customizing *seafly* colors.
 
 | Option | Description | Default Value | Color
 |--------|-------------|---------------|------
+| **`SEAFLY_PREFIX_COLOR`** | *Optional prefix* segment | `$(tput setaf 180)` | ![normal](https://placehold.it/32/d7af87/000000?text=+)
 | **`SEAFLY_NORMAL_COLOR`** | Normal prompt and certain Git indicators | `$(tput setaf 111)` | ![normal](https://placehold.it/32/87afff/000000?text=+)
 | **`SEAFLY_ALERT_COLOR`** | Alert prompt and Git dirty indicator | `$(tput setaf 203)` | ![normal](https://placehold.it/32/ff5f5f/000000?text=+)
-| **`SEAFLY_HOST_COLOR`** | Host details | `$(tput setaf 255)` | ![normal](https://placehold.it/32/eeeeee/000000?text=+)
+| **`SEAFLY_HOST_COLOR`** | Host segment | `$(tput setaf 255)` | ![normal](https://placehold.it/32/eeeeee/000000?text=+)
 | **`SEAFLY_GIT_COLOR`** | Git branch, stash and optional prefix/suffix | `$(tput setaf 147)` | ![normal](https://placehold.it/32/afafff/000000?text=+)
 | **`SEAFLY_PATH_COLOR`** | Current directory path | `$(tput setaf 150)` | ![normal](https://placehold.it/32/afd787/000000?text=+)
 
