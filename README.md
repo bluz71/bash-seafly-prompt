@@ -62,8 +62,9 @@ will:
 
 - only use ASCII characters
 - use colors appropriate for a light terminal theme
-- style the Git section to mimic
-    [`$(__git_ps1)`](https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh)
+- style the Git section to mimic `$(__git_ps1)` provided by the
+    [`git-prompt.sh` script](https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh)
+    that ships with Git
 
 ```sh
 SEAFLY_PROMPT_SYMBOL=">"
