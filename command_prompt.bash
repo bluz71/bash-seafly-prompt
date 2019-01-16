@@ -52,6 +52,9 @@ fi
 if [[ -z $SEAFLY_PROMPT_SYMBOL ]]; then
     SEAFLY_PROMPT_SYMBOL="❯"
 fi
+if [[ -z $SEAFLY_PS2_PROMPT_SYMBOL ]]; then
+    SEAFLY_PS2_PROMPT_SYMBOL="❯"
+fi
 if [[ -z $SEAFLY_GIT_PREFIX ]]; then
     SEAFLY_GIT_PREFIX=""
 fi
@@ -161,7 +164,7 @@ _command_prompt()
     local prompt_end="\$(if [[ \$? = 0 ]]; then echo \[\$SEAFLY_NORMAL_COLOR\]; else echo \[\$SEAFLY_ALERT_COLOR\]; fi) $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
 
     PS1="$prompt_prefix$prompt_start$prompt_middle$prompt_end"
-    PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
+    PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PS2_PROMPT_SYMBOL\[\$NOCOLOR\] "
 }
 
 # Bind the '_command_prompt' function as the Bash prompt.
