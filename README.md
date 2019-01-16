@@ -141,8 +141,8 @@ Note, a dash character denotes an unset default value.
 
 | Option | Description | Default Value
 |--------|-------------|--------------
-| **`SEAFLY_PRE_COMMAND`** | A command to run each time the prompt is displayed.<br>For example `"history -a"`.<br>Please make sure any pre-command is very fast. | -
-| **`SEAFLY_PROMPT_PREFIX`** | A shell script snippet to populate the *optional prefix* segment.<br>For example, this will display the current version of Ruby:<br>`"if [ -f Gemfile ]; then echo $(ruby -v \| cut -c6-10); fi"`<br>Please make sure the script snippet is simple and fast | -
+| **`SEAFLY_PRE_COMMAND`** | A command to run each time the prompt is displayed.<br>For example, `"history -a"`.<br>Please make sure any pre-command is very fast. | -
+| **`SEAFLY_PROMPT_PREFIX`** | A shell script snippet to populate the *optional prefix* segment.<br>For example, display the current version of Ruby when in a Ruby project:<br>`"if [ -f Gemfile ]; then echo $(ruby -v \| cut -c6-10); fi"`<br>Please make sure the script snippet is simple and fast | -
 | **`SEAFLY_SHOW_USER`** | Display the current user in the host segment.<br>Set to `1` to display the user. | 0
 | **`SEAFLY_LAYOUT`** | Specify the preferred layout.<br>Layout `1` will display Git details followed by path.<br>Layout `2` will flip the Git details and path. | 1
 | **`PROMPT_DIRTRIM`** | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path. | 4
