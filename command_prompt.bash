@@ -17,7 +17,7 @@ fi
 # Colors used in the prompt.
 if [[ $_interactive_terminal = 1 && $_color_terminal = 1 ]]; then
     if [[ -z $SEAFLY_PREFIX_COLOR ]]; then
-        SEAFLY_PREFIX_COLOR=$(tput setaf 180)
+        SEAFLY_PREFIX_COLOR=$(tput setaf 153)
     fi
     if [[ -z $SEAFLY_NORMAL_COLOR ]]; then
         SEAFLY_NORMAL_COLOR=$(tput setaf 111)
