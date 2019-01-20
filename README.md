@@ -141,14 +141,30 @@ Note, a dash character denotes an unset default value.
 
 | Option | Description | Default Value
 |--------|-------------|--------------
-| **`SEAFLY_PRE_COMMAND`** | A command to run each time the prompt is displayed.<br>For example, `"history -a"`.<br>Please make sure any pre-command is very fast. | -
-| **`SEAFLY_PROMPT_PREFIX`** | A shell script snippet to populate the *optional prefix* segment.<br>For example, display the current version of Ruby when in a Ruby project:<br>`"if [ -f Gemfile ]; then echo $(ruby -v \| cut -c6-10); fi"`<br>Please make sure the script snippet is simple and fast | -
+| **`SEAFLY_PRE_COMMAND`** | A command to run each time the prompt is displayed.<br>Please make sure any pre-command is very fast.<br>For example, `"history -a"`. | -
+| **`SEAFLY_PROMPT_PREFIX`** | A shell script snippet to populate the *optional prefix* segment.<br>Please make sure the script snippet is simple and fast<br>Refer to the examples below. | -
 | **`SEAFLY_SHOW_USER`** | Display the current user in the host segment.<br>Set to `1` to display the user. | 0
 | **`SEAFLY_LAYOUT`** | Specify the preferred layout.<br>Layout `1` will display Git details followed by path.<br>Layout `2` will flip the Git details and path. | 1
 | **`PROMPT_DIRTRIM`** | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path. | 4
 | **`GIT_PS1_SHOWDIRTYSTATE`** | Indicate the presence of Git modifications.<br>Set to `0` to skip. | 1
 | **`GIT_PS1_SHOWSTASHSTATE`** | Indicate the presence of Git stashes.<br>Set to `0` to skip. | 1
 | **`GIT_PS1_SHOWUPSTREAM`** | Indicate differences exist between HEAD and upstream in a Git remote-tracking branch.<br>Set to `0` to skip. | 1
+
+:gift: A few **`SEAFLY_PROMPT_PREFIX`** examples:
+
+- When using the [chruby](https://github.com/postmodern/chruby) Ruby version
+    manager and when in a Ruby project base directory display the current
+    Ruby version within parenthesis:
+    ```sh
+    SEAFLY_PROMPT_PREFIX='if [[ -f Gemfile ]]; then echo "($(chruby | grep "*" | cut -d" " -f3))"; fi'
+    ```
+
+- When in an active Python [Virtual
+    Environment](https://realpython.com/python-virtual-environments-a-primer)
+    display the name of the current environment within parenthesis:
+    ```sh
+    SEAFLY_PROMPT_PREFIX='if [[ -n $VIRTUAL_ENV ]]; then echo "($(basename $VIRTUAL_ENV))"; fi'
+    ```
 
 :bomb: In certain Git repositories, calculating dirty-state can be slow,
 either due to the size of the repository or the speed of the file-system
