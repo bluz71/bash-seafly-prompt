@@ -20,8 +20,7 @@ The font in use is [Iosevka](https://github.com/be5invis/Iosevka).
 Layout
 ------
 
-*seafly* is a single line prompt that is divided into the following five
-segments:
+*seafly* is a single line prompt that is divided into the following segments:
 
 ```
 <Optional Prefix> <Host> <Git Branch> <Git Indicators> <Current Path> <Prompt Symbol>
