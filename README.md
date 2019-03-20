@@ -44,9 +44,8 @@ Please refer to the configuration section below for more details.
 ## Visuals
 
 _seafly_ by default will use Unicode characters for the prompt symbol and
-certain Git indicators. These symbols will display correctly in modern fonts
-such as [Hack](https://github.com/source-foundry/Hack) or
-[Iosevka](https://github.com/be5invis/Iosevka).
+certain Git indicators. These symbols will display correctly when using a modern
+font such as [Iosevka](https://github.com/be5invis/Iosevka).
 
 Also, _seafly_ by default will use colors that favour a dark background.
 
