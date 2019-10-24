@@ -1,4 +1,5 @@
-# seafly
+seafly
+======
 
 _seafly_ is a modern, informative and configurable command prompt for the
 [Bash](https://www.gnu.org/software/bash) shell.
@@ -9,13 +10,15 @@ Inspiration provided by:
 -   [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt)
 -   [sapegin/dotfiles Bash prompt](https://github.com/sapegin/dotfiles/blob/dd063f9c30de7d2234e8accdb5272a5cc0a3388b/includes/bash_prompt.bash)
 
-## Screenshot
+Screenshot
+----------
 
 <img width="800" alt="seafly" src="https://raw.githubusercontent.com/bluz71/misc-binaries/master/seafly/seafly.png">
 
 The font in use is [Iosevka](https://github.com/be5invis/Iosevka).
 
-## Layout
+Layout
+------
 
 _seafly_ is a single line prompt that is divided into the following segments:
 
@@ -31,7 +34,8 @@ Note, when `SEAFLY_LAYOUT=2` is set the prompt will be:
 
 Please refer to the configuration section below for more details.
 
-## Behaviour
+Behaviour
+---------
 
 -   When in a Git repository the checked out Git branch will be displayed.
 
@@ -41,7 +45,8 @@ Please refer to the configuration section below for more details.
 -   The prompt symbol will change to an alert color, by default red, if the last
     command did not execute successfully.
 
-## Visuals
+Visuals
+-------
 
 _seafly_ by default will use Unicode characters for the prompt symbol and
 certain Git indicators. These symbols will display correctly when using a modern
@@ -77,7 +82,8 @@ SEAFLY_PATH_COLOR="$(tput setaf 70)"
 . ~/.bash-seafly-prompt/command_prompt.bash
 ```
 
-## Requirements
+Requirements
+------------
 
 A modern 256 or true color terminal is required.
 
@@ -99,7 +105,8 @@ set -g default-terminal "screen-256color"
 set -ga terminal-overrides ',xterm-256color:Tc'
 ```
 
-## Installation
+Installation
+------------
 
 Install the _seafly_ prompt script:
 
@@ -120,7 +127,8 @@ cd ~/.bash-seafly-prompt
 git pull
 ```
 
-## Configuration
+Configuration
+-------------
 
 Certain behaviours and visuals of the _seafly_ prompt can be controlled
 through environment variables.
@@ -199,6 +207,7 @@ chart](https://jonasjacek.github.io/colors) when customizing _seafly_ colors.
 | **`SEAFLY_GIT_COLOR`**    | Git branch, stash and optional prefix/suffix | `$(tput setaf 147)` | ![normal](https://placehold.it/32/afafff/000000?text=+) |
 | **`SEAFLY_PATH_COLOR`**   | Current directory path                       | `$(tput setaf 150)` | ![normal](https://placehold.it/32/afd787/000000?text=+) |
 
-## License
+License
+-------
 
 [MIT](https://opensource.org/licenses/MIT)
