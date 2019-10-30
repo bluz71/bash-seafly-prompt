@@ -83,20 +83,9 @@ if [[ -z $SEAFLY_GIT_DIVERGED ]]; then
     SEAFLY_GIT_DIVERGED="↕"
 fi
 
-_command_prompt()
-{
-    # Run a pre-command if set.
-    if [[ -n $SEAFLY_PRE_COMMAND ]]; then
-        eval $SEAFLY_PRE_COMMAND
-    fi
-
-    # Set a simple prompt for non-interactive or non-color terminals.
-    if [[ $_interactive_terminal = 0 || $_color_terminal = 0 ]]; then
-        PS1='\h \w > '
-        return
-    fi
-
-    local git_details
+# Collate Git details using just the 'git' command.
+#
+_git_details_fallback() {
     if [[ $(git rev-parse --is-inside-work-tree --is-bare-repository 2>/dev/null) =~ true ]]; then
         local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
         if [[ $branch = "HEAD" ]]; then
@@ -137,7 +126,66 @@ _command_prompt()
         if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
             spacer=" "
         fi
-        git_details=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
+        export SEAFLY_GIT_DETAILS=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
+    fi
+}
+
+# Collate Git details using the optimized
+# [gitstatus](https://github.com/romkatv/gitstatus) command.
+#
+_git_details_optimized() {
+    if gitstatus_query && [[ $VCS_STATUS_RESULT == ok-sync ]]; then
+        local branch=$VCS_STATUS_LOCAL_BRANCH
+        if [[ -z $branch ]]; then
+            branch="detached*$(git rev-parse --short HEAD 2>/dev/null)"
+        fi
+
+        local dirty
+        local staged
+        if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 &&
+              $VCS_STATUS_HAS_UNSTAGED == 1 ]]; then
+            dirty=$SEAFLY_GIT_DIRTY
+        fi
+        if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 &&
+              $VCS_STATUS_HAS_STAGED == 1 ]]; then
+            staged=$SEAFLY_GIT_STAGED
+        fi
+
+        local stash
+        if [[ $GIT_PS1_SHOWSTASHSTATE != 0 && $VCS_STATUS_STASHES -gt 0 ]]; then
+            stash=$SEAFLY_GIT_STASH
+        fi
+
+        local upstream
+        if [[ $GIT_PS1_SHOWUPSTREAM != 0 ]]; then
+            if [[ $VCS_STATUS_COMMITS_AHEAD -gt 0 &&
+                  $VCS_STATUS_COMMITS_BEHIND -gt 0 ]]; then
+                upstream=$SEAFLY_GIT_DIVERGED
+            elif [[ $VCS_STATUS_COMMITS_AHEAD -gt 0 ]]; then
+                upstream=$SEAFLY_GIT_AHEAD
+            elif [[ $VCS_STATUS_COMMITS_BEHIND -gt 0 ]]; then
+                upstream=$SEAFLY_GIT_BEHIND
+            fi
+        fi
+
+        local spacer
+        if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
+            spacer=" "
+        fi
+        export SEAFLY_GIT_DETAILS=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
+    fi
+}
+
+_command_prompt() {
+    # Run a pre-command if set.
+    if [[ -n $SEAFLY_PRE_COMMAND ]]; then
+        eval $SEAFLY_PRE_COMMAND
+    fi
+
+    # Set a simple prompt for non-interactive or non-color terminals.
+    if [[ $_interactive_terminal = 0 || $_color_terminal = 0 ]]; then
+        PS1='\h \w > '
+        return
     fi
 
     local prompt_prefix
@@ -155,12 +203,20 @@ _command_prompt()
         prompt_start="\[$SEAFLY_HOST_COLOR\]\h"
     fi
 
+    # Collate Git details, if applicable, for the current directory.
+    if [[ -z $GITSTATUS_DIR ]]; then
+        _git_details_fallback
+    else
+        _git_details_optimized
+    fi
+
     local prompt_middle
     if [[ $SEAFLY_LAYOUT = 1 ]]; then
-        prompt_middle="\[$SEAFLY_GIT_COLOR\]$git_details\[$SEAFLY_PATH_COLOR\] \w"
+        prompt_middle="\[$SEAFLY_GIT_COLOR\]$SEAFLY_GIT_DETAILS\[$SEAFLY_PATH_COLOR\] \w"
     else
-        prompt_middle="\[$SEAFLY_PATH_COLOR\] \w\[$SEAFLY_GIT_COLOR\]$git_details"
+        prompt_middle="\[$SEAFLY_PATH_COLOR\] \w\[$SEAFLY_GIT_COLOR\]$SEAFLY_GIT_DETAILS"
     fi
+    unset SEAFLY_GIT_DETAILS
 
     # Normal prompt indicates that the last command ran successfully.
     # Alert prompt indicates that the last command failed.
@@ -169,6 +225,15 @@ _command_prompt()
     PS1="$prompt_prefix$prompt_start$prompt_middle$prompt_end"
     PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PS2_PROMPT_SYMBOL\[\$NOCOLOR\] "
 }
+
+# Use [gitstatus](https://github.com/romkatv/gitstatus) if it is available.
+if [[ -d ~/.gitstatus ]]; then
+    export GITSTATUS_DIR=~/.gitstatus
+fi
+if [[ -f $GITSTATUS_DIR/gitstatus.prompt.sh ]]; then
+    source ~/.gitstatus/gitstatus.prompt.sh
+    gitstatus_stop && gitstatus_start
+fi
 
 # Bind the '_command_prompt' function as the Bash prompt.
 PROMPT_COMMAND=_command_prompt
