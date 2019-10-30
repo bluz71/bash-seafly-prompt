@@ -1,14 +1,17 @@
 seafly
 ======
 
-_seafly_ is a modern, informative and configurable command prompt for the
+_seafly_ is a modern, informative, and configurable command prompt for the
 [Bash](https://www.gnu.org/software/bash) shell.
 
 Inspiration provided by:
 
--   [Pure ZSH](https://github.com/sindresorhus/pure)
--   [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt)
--   [sapegin/dotfiles Bash prompt](https://github.com/sapegin/dotfiles/blob/dd063f9c30de7d2234e8accdb5272a5cc0a3388b/includes/bash_prompt.bash)
+- [Pure ZSH](https://github.com/sindresorhus/pure)
+- [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt)
+- [sapegin/dotfiles Bash prompt](https://github.com/sapegin/dotfiles/blob/dd063f9c30de7d2234e8accdb5272a5cc0a3388b/includes/bash_prompt.bash)
+
+:rocket: For maximum performance, _seafly_ will use, if available, the excellent
+[gitstatus](https://github.com/romkatv/gitstatus) command.
 
 Screenshot
 ----------
@@ -37,13 +40,13 @@ Please refer to the configuration section below for more details.
 Behaviour
 ---------
 
--   When in a Git repository the checked out Git branch will be displayed.
+- When in a Git repository the checked out Git branch will be displayed.
 
--   When in a Git repository, dirty state, upstream and stash indicators will be
-    displayed. Note, these can individually be disabled if desired.
+- When in a Git repository, dirty state, upstream and stash indicators will be
+  displayed. Note, these can individually be disabled if desired.
 
--   The prompt symbol will change to an alert color, by default red, if the last
-    command did not execute successfully.
+- The prompt symbol will change to an alert color, by default red, if the last
+  command did not execute successfully.
 
 Visuals
 -------
@@ -127,6 +130,31 @@ cd ~/.bash-seafly-prompt
 git pull
 ```
 
+gitstatus
+---------
+
+The [gitstatus](https://github.com/romkatv/gitstatus) command, a
+high-performance alternative to the `git status` command, is designed
+specifically for low-latency command prompt usage.
+
+The _seafly_ prompt does not require _gitstatus_, but it is **strongly**
+recommended to install and use this command, especially when dealing with large
+Git repositories. Git detail collation will otherwise fallback to the slower
+`git` command when _gitstatus_ is not available.
+
+If possible, please install _gitstatus_:
+
+```sh
+git clone https://github.com/romkatv/gitstatus.git ~/.gitstatus
+```
+
+If _gitstatus_ is already installed in an alternate directory then please export
+its location in an environment variable:
+
+```sh
+export GITSTATUS_DIR=/location/of/gitstatus
+```
+
 Configuration
 -------------
 
@@ -168,7 +196,7 @@ Note, a dash character denotes an unset default value.
 
 :bomb: In certain Git repositories, calculating dirty-state can be slow,
 either due to the size of the repository or the speed of the file-system
-hosting the repository. If so, the prompt will render slowly. One can either
+hosting the repository. If so, the prompt may render slowly. One can either
 set `GIT_PS1_SHOWDIRTYSTATE=0` to disable dirty-state indication for all
 repositories, or if only a few repositories have performance issues then one
 can do the following to skip dirty-state indication on a per-repository basis:
@@ -176,6 +204,9 @@ can do the following to skip dirty-state indication on a per-repository basis:
 ```sh
 % git config bash.showDirtyState false
 ```
+
+:rocket: For best prompt rendering performance, when in Git repositories, please
+install and use the [gitstatus](https://github.com/romkatv/gitstatus) command.
 
 ### Symbols
 
