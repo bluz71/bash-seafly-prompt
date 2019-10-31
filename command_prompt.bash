@@ -50,60 +50,6 @@ fi
 # Optional command that outputs as the prompt prefix.
 : ${SEAFLY_PROMPT_PREFIX:=""}
 
-# Collate Git details using just the 'git' command.
-#
-_seafly_git_fallback() {
-    local is_git_repo
-    if [[ $(git rev-parse --is-inside-work-tree --is-bare-repository 2>/dev/null) =~ true ]]; then
-        is_git_repo=1
-    fi
-    [[ $is_git_repo == 1 ]] || return
-
-    # We are in a Git repository.
-    local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
-    if [[ $branch == "HEAD" ]]; then
-        branch="detached*$(git rev-parse --short HEAD 2>/dev/null)"
-    fi
-    branch=${branch//\\/\\\\}  # Escape backslashes
-    branch=${branch//\$/\\\$}  # Escape dollars
-
-    local dirty
-    local staged
-    if [[ $branch != "detached*" &&
-          $GIT_PS1_SHOWDIRTYSTATE != 0 &&
-          $(git config --bool bash.showDirtyState) != "false" ]]; then
-        git diff --no-ext-diff --quiet --exit-code --ignore-submodules 2>/dev/null || dirty=$SEAFLY_GIT_DIRTY
-        git diff --no-ext-diff --quiet --cached --exit-code --ignore-submodules 2>/dev/null || staged=$SEAFLY_GIT_STAGED
-    fi
-
-    local stash
-    if [[ $GIT_PS1_SHOWSTASHSTATE != 0 ]]; then
-        git rev-parse --verify --quiet refs/stash >/dev/null && stash=$SEAFLY_GIT_STASH
-    fi
-
-    local upstream
-    if [[ $GIT_PS1_SHOWUPSTREAM != 0 ]]; then
-        case "$(git rev-list --left-right --count HEAD...@'{u}' 2>/dev/null)" in
-        "") # no upstream
-            upstream="" ;;
-        "0	0") # equal to upstream
-            upstream="=" ;;
-        "0	"*) # behind upstream
-            upstream=$SEAFLY_GIT_BEHIND ;;
-        *"	0") # ahead of upstream
-            upstream=$SEAFLY_GIT_AHEAD ;;
-        *)	    # diverged from upstream
-            upstream=$SEAFLY_GIT_DIVERGED ;;
-        esac
-    fi
-
-    local spacer
-    if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
-        spacer=" "
-    fi
-    _seafly_git=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
-}
-
 # Collate Git details using the optimized
 # [gitstatus](https://github.com/romkatv/gitstatus) command.
 #
@@ -163,6 +109,60 @@ _seafly_git_optimized() {
     _seafly_git=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
 }
 
+# Collate Git details using just the 'git' command.
+#
+_seafly_git_fallback() {
+    local is_git_repo
+    if [[ $(git rev-parse --is-inside-work-tree --is-bare-repository 2>/dev/null) =~ true ]]; then
+        is_git_repo=1
+    fi
+    [[ $is_git_repo == 1 ]] || return
+
+    # We are in a Git repository.
+    local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+    if [[ $branch == "HEAD" ]]; then
+        branch="detached*$(git rev-parse --short HEAD 2>/dev/null)"
+    fi
+    branch=${branch//\\/\\\\}  # Escape backslashes
+    branch=${branch//\$/\\\$}  # Escape dollars
+
+    local dirty
+    local staged
+    if [[ $branch != "detached*" &&
+          $GIT_PS1_SHOWDIRTYSTATE != 0 &&
+          $(git config --bool bash.showDirtyState) != "false" ]]; then
+        git diff --no-ext-diff --quiet --exit-code --ignore-submodules 2>/dev/null || dirty=$SEAFLY_GIT_DIRTY
+        git diff --no-ext-diff --quiet --cached --exit-code --ignore-submodules 2>/dev/null || staged=$SEAFLY_GIT_STAGED
+    fi
+
+    local stash
+    if [[ $GIT_PS1_SHOWSTASHSTATE != 0 ]]; then
+        git rev-parse --verify --quiet refs/stash >/dev/null && stash=$SEAFLY_GIT_STASH
+    fi
+
+    local upstream
+    if [[ $GIT_PS1_SHOWUPSTREAM != 0 ]]; then
+        case "$(git rev-list --left-right --count HEAD...@'{u}' 2>/dev/null)" in
+        "") # no upstream
+            upstream="" ;;
+        "0	0") # equal to upstream
+            upstream="=" ;;
+        "0	"*) # behind upstream
+            upstream=$SEAFLY_GIT_BEHIND ;;
+        *"	0") # ahead of upstream
+            upstream=$SEAFLY_GIT_AHEAD ;;
+        *)	    # diverged from upstream
+            upstream=$SEAFLY_GIT_DIVERGED ;;
+        esac
+    fi
+
+    local spacer
+    if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
+        spacer=" "
+    fi
+    _seafly_git=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
+}
+
 _seafly_command_prompt() {
     # Run the pre-command if set.
     if [[ -n $SEAFLY_PRE_COMMAND ]]; then
@@ -185,10 +185,10 @@ _seafly_command_prompt() {
     fi
 
     # Collate Git details, if applicable, for the current directory.
-    if [[ -z $SEAFLY_GITSTATUS_DIR ]]; then
-        _seafly_git_fallback
-    else
+    if [[ -n $SEAFLY_GITSTATUS_DIR ]]; then
         _seafly_git_optimized
+    else
+        _seafly_git_fallback
     fi
 
     local prompt_middle
