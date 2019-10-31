@@ -26,6 +26,11 @@ fi
 # has already been set.
 : ${PROMPT_DIRTRIM:=4}
 
+# Default Git indicator values.
+: ${GIT_PS1_SHOWDIRTYSTATE:=1}
+: ${GIT_PS1_SHOWSTASHSTATE:=1}
+: ${GIT_PS1_SHOWUPSTREAM:=1}
+
 # Default layout settings.
 : ${SEAFLY_SHOW_USER:=0}
 : ${SEAFLY_LAYOUT:=1}
@@ -55,10 +60,9 @@ fi
 #
 _seafly_git_optimized() {
     local flags
-    [[ $GIT_PS1_SHOWDIRTYSTATE == 0 ]] && flags=-p # Avoid unnecessary work
-    if hash gitstatus_query 2>/dev/null && gitstatus_query $flags; then
-        :
-    else
+    [[ $GIT_PS1_SHOWDIRTYSTATE == 0 ||
+       $(git config --bool bash.showDirtyState) == "false" ]] && flags=-p
+    if ! hash gitstatus_query 2>/dev/null || ! gitstatus_query $flags; then
         # Either gitstatus_query does not exist or it failed, use fallback
         # instead.
         _seafly_git_fallback
@@ -76,10 +80,14 @@ _seafly_git_optimized() {
 
     local dirty
     local staged
-    if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 && $VCS_STATUS_HAS_UNSTAGED == 1 ]]; then
+    if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 &&
+          $(git config --bool bash.showDirtyState) != "false" &&
+          $VCS_STATUS_HAS_UNSTAGED == 1 ]]; then
         dirty=$SEAFLY_GIT_DIRTY
     fi
-    if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 && $VCS_STATUS_HAS_STAGED == 1 ]]; then
+    if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 &&
+          $(git config --bool bash.showDirtyState) != "false" &&
+          $VCS_STATUS_HAS_STAGED == 1 ]]; then
         staged=$SEAFLY_GIT_STAGED
     fi
 
@@ -165,16 +173,12 @@ _seafly_git_fallback() {
 
 _seafly_command_prompt() {
     # Run the pre-command if set.
-    if [[ -n $SEAFLY_PRE_COMMAND ]]; then
-        eval $SEAFLY_PRE_COMMAND
-    fi
+    eval $SEAFLY_PRE_COMMAND
 
     local prompt_prefix
-    if [[ -n $SEAFLY_PROMPT_PREFIX ]]; then
-        local prefix_value=$(eval $SEAFLY_PROMPT_PREFIX)
-        if [[ -n $prefix_value ]]; then
-            prompt_prefix="\[$SEAFLY_PREFIX_COLOR\]$prefix_value "
-        fi
+    local prefix_value=$(eval $SEAFLY_PROMPT_PREFIX)
+    if [[ -n $prefix_value ]]; then
+        prompt_prefix="\[$SEAFLY_PREFIX_COLOR\]$prefix_value "
     fi
 
     local prompt_start
@@ -185,11 +189,7 @@ _seafly_command_prompt() {
     fi
 
     # Collate Git details, if applicable, for the current directory.
-    if [[ -n $SEAFLY_GITSTATUS_DIR ]]; then
-        _seafly_git_optimized
-    else
-        _seafly_git_fallback
-    fi
+    _seafly_git_optimized
 
     local prompt_middle
     if [[ $SEAFLY_LAYOUT = 1 ]]; then
@@ -201,15 +201,16 @@ _seafly_command_prompt() {
 
     # Normal prompt indicates that the last command ran successfully.
     # Alert prompt indicates that the last command failed.
-    local prompt_end="\$(if [[ \$? = 0 ]]; then echo \[\$SEAFLY_NORMAL_COLOR\]; else echo \[\$SEAFLY_ALERT_COLOR\]; fi) $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
+    _seafly_colors=("$SEAFLY_ALERT_COLOR" "$SEAFLY_NORMAL_COLOR")
+    local prompt_end="\[\${_seafly_colors[\$((!\$?))]}\] $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
 
     PS1="$prompt_prefix$prompt_start$prompt_middle$prompt_end"
     PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PS2_PROMPT_SYMBOL\[\$NOCOLOR\] "
 }
 
 # Use [gitstatus](https://github.com/romkatv/gitstatus) if it is available.
-if [[ -r $SEAFLY_GITSTATUS_DIR/gitstatus.prompt.sh ]]; then
-    source ~/.gitstatus/gitstatus.plugin.sh
+if [[ -r $SEAFLY_GITSTATUS_DIR/gitstatus.plugin.sh ]]; then
+    source $SEAFLY_GITSTATUS_DIR/gitstatus.plugin.sh
     gitstatus_stop && gitstatus_start -c 0 -d 0
 fi
 
