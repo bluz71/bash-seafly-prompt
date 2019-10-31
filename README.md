@@ -205,8 +205,9 @@ can do the following to skip dirty-state indication on a per-repository basis:
 % git config bash.showDirtyState false
 ```
 
-:rocket: For best prompt rendering performance, when in Git repositories, please
-install and use the [gitstatus](https://github.com/romkatv/gitstatus) command.
+:rocket: Again, for best prompt rendering performance, when in Git repositories,
+please install and use the [gitstatus](https://github.com/romkatv/gitstatus)
+command.
 
 ### Symbols
 
