@@ -207,7 +207,7 @@ _seafly_command_prompt() {
 
 # Use [gitstatus](https://github.com/romkatv/gitstatus) if it is available.
 if [[ -r $SEAFLY_GITSTATUS_DIR/gitstatus.plugin.sh ]]; then
-    source $SEAFLY_GITSTATUS_DIR/gitstatus.plugin.sh
+    source "$SEAFLY_GITSTATUS_DIR"/gitstatus.plugin.sh
     gitstatus_stop && gitstatus_start -c 0 -d 0
 fi
 
