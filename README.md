@@ -152,7 +152,7 @@ If _gitstatus_ is already installed in an alternate directory then please export
 its location in an environment variable:
 
 ```sh
-export GITSTATUS_DIR=/location/of/gitstatus
+export SEAFLY_GITSTATUS_DIR=/location/of/gitstatus
 ```
 
 Configuration
