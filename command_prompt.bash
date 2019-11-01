@@ -60,8 +60,9 @@ fi
 #
 _seafly_git_optimized() {
     local flags
-    [[ $GIT_PS1_SHOWDIRTYSTATE == 0 ||
-       $(git config --bool bash.showDirtyState) == "false" ]] && flags=-p
+    # Note, gitstatus will automatically set '-p' if the local repository has
+    # set 'bash.showDirtyState' to false.
+    [[ $GIT_PS1_SHOWDIRTYSTATE == 0  ]] && flags=-p # Avoid unnecessary work
     if ! hash gitstatus_query 2>/dev/null || ! gitstatus_query $flags; then
         # Either gitstatus_query does not exist or it failed, use fallback
         # instead.
@@ -80,14 +81,10 @@ _seafly_git_optimized() {
 
     local dirty
     local staged
-    if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 &&
-          $(git config --bool bash.showDirtyState) != "false" &&
-          $VCS_STATUS_HAS_UNSTAGED == 1 ]]; then
+    if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 && $VCS_STATUS_HAS_UNSTAGED == 1 ]]; then
         dirty=$SEAFLY_GIT_DIRTY
     fi
-    if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 &&
-          $(git config --bool bash.showDirtyState) != "false" &&
-          $VCS_STATUS_HAS_STAGED == 1 ]]; then
+    if [[ $GIT_PS1_SHOWDIRTYSTATE != 0 && $VCS_STATUS_HAS_STAGED == 1 ]]; then
         staged=$SEAFLY_GIT_STAGED
     fi
 
