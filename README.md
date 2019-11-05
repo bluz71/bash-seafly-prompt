@@ -145,7 +145,7 @@ Git repositories. Git detail collation will otherwise fallback to the slower
 If possible, please install _gitstatus_:
 
 ```sh
-git clone https://github.com/romkatv/gitstatus.git ~/.gitstatus
+git clone --depth 1 https://github.com/romkatv/gitstatus.git ~/.gitstatus
 ```
 
 If _gitstatus_ is already installed in an alternate directory then please export
