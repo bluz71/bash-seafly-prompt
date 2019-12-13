@@ -7,8 +7,8 @@
 # Non-interactive shells don't have a prompt, exit early.
 [[ $- =~ i ]] || return 0
 
-# Set a simple prompt for non-256color terminals.
-if [[ $TERM != *-256color ]]; then
+# Set a simple prompt for non-256color and non-kitty terminals.
+if [[ $TERM != *-256color ]] && [[ $TERM != *-kitty ]]; then
     PS1='\h \w > '
     return 0
 fi
