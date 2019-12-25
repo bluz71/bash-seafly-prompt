@@ -1,5 +1,5 @@
-seafly
-======
+![seafly](https://github.com/bluz71/misc-binaries/blob/master/headings/seafly.png)
+========
 
 _seafly_ is a modern, informative, and configurable command prompt for the
 [Bash](https://www.gnu.org/software/bash) shell.
