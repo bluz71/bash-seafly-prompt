@@ -1,4 +1,4 @@
-![seafly](https://github.com/bluz71/misc-binaries/blob/master/headings/seafly.png)
+![seafly](https://raw.githubusercontent.com/bluz71/misc-binaries/master/headings/seafly.png)
 ========
 
 _seafly_ is a modern, informative, and configurable command prompt for the
