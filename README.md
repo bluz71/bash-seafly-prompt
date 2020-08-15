@@ -202,7 +202,14 @@ repositories, or if only a few repositories have performance issues then one
 can do the following to skip dirty-state indication on a per-repository basis:
 
 ```sh
-% git config bash.showDirtyState false
+git config bash.showDirtyState false
+```
+
+:hourglass: The `manyFiles` feature introduced in Git `2.24` may prove useful
+to improve performance for very large repositories:
+
+```sh
+git config feature.manyFiles true
 ```
 
 :rocket: Again, for best prompt rendering performance, when in Git repositories,
