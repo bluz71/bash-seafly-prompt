@@ -23,7 +23,7 @@ The font in use is [Iosevka](https://github.com/be5invis/Iosevka).
 Layout
 ------
 
-_seafly_ is a single line prompt that is divided into the following segments:
+_seafly_ as a single line prompt that is divided into the following segments:
 
 ```
 <Optional Prefix> <Host> <Git Branch> <Git Indicators> <Current Path> <Prompt Symbol>
@@ -34,6 +34,21 @@ Note, when `SEAFLY_LAYOUT=2` is set the prompt will be:
 ```
 <Optional Prefix> <Host> <Current Path> <Git Branch> <Git Indicators> <Prompt Symbol>
 ```
+
+When `SEAFLY_SHOW_HOST=0` is set the prompt will be:
+
+```
+<Optional Prefix> <Git Branch> <Git Indicators> <Current Path> <Prompt Symbol>
+```
+
+or the following with `SEAFLY_LAYOUT=2`:
+
+```
+<Optional Prefix> <Current Path> <Git Branch> <Git Indicators> <Prompt Symbol>
+```
+
+seafly as a multiline prompt takes the same layout options as above with a newline
+at the begining and before `<Prompt Symbol>`.
 
 Please refer to the configuration section below for more details.
 
@@ -170,7 +185,9 @@ Note, a dash character denotes an unset default value.
 | **`SEAFLY_PRE_COMMAND`**     | A command to run each time the prompt is displayed.<br>Please make sure any pre-command is very fast.<br>For example, `"history -a"`.                        | -             |
 | **`SEAFLY_PROMPT_PREFIX`**   | A shell script snippet to populate the _optional prefix_ segment.<br>Please make sure the script snippet is simple and fast.<br>Refer to the examples below. | -             |
 | **`SEAFLY_SHOW_USER`**       | Display the current user in the host segment.<br>Set to `1` to display the user.                                                                             | 0             |
+| **`SEAFLY_SHOW_HOST`**       | Display the current hostname in the host segment.<br>Set to `1` to display the host.                                                                             | 1             |
 | **`SEAFLY_LAYOUT`**          | Specify the preferred layout.<br>Layout `1` will display Git details followed by path.<br>Layout `2` will flip the Git details and path.                     | 1             |
+| **`SEAFLY_MULTILINE`**          | Specify the preferred multiline layout.<br>Multiline `1` will display the prompt over 2 lines.<br>Multiline `0` will provide a single line prompt.                     | 0             |
 | **`PROMPT_DIRTRIM`**         | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path.                                     | 4             |
 | **`GIT_PS1_SHOWDIRTYSTATE`** | Indicate the presence of Git modifications.<br>Set to `0` to skip.                                                                                           | 1             |
 | **`GIT_PS1_SHOWSTASHSTATE`** | Indicate the presence of Git stashes.<br>Set to `0` to skip.                                                                                                 | 1             |
