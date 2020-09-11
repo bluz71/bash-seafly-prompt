@@ -7,8 +7,8 @@
 # Non-interactive shells don't have a prompt, exit early.
 [[ $- =~ i ]] || return 0
 
-# Set a simple prompt for non-256color and non-kitty or alacritty terminals.
-if [[ $TERM != *-256color ]] && [[ $TERM != *-kitty ]] && [[ $TERM != alacritty ]]; then
+# Set a simple prompt for non-256color, non-alacritty and non-kitty terminals.
+if [[ $TERM != *-256color ]] && [[ $TERM != alacritty* ]] && [[ $TERM != *-kitty ]]; then
     PS1='\h \w > '
     return 0
 fi
@@ -32,10 +32,10 @@ fi
 : ${GIT_PS1_SHOWUPSTREAM:=1}
 
 # Default layout settings.
-: ${SEAFLY_SHOW_USER:=0}
-: ${SEAFLY_SHOW_HOST:=1}
 : ${SEAFLY_LAYOUT:=1}
 : ${SEAFLY_MULTILINE:=0}
+: ${SEAFLY_SHOW_USER:=0}
+: ${SEAFLY_SHOW_HOST:=1}
 
 # Default symbols used in the prompt.
 : ${SEAFLY_PROMPT_SYMBOL:="❯"}
@@ -179,7 +179,6 @@ _seafly_command_prompt() {
     if [[ -n $prefix_value ]]; then
         prompt_prefix="\[$SEAFLY_PREFIX_COLOR\]$prefix_value "
     fi
-
     if [[ $SEAFLY_MULTILINE = 1 ]]; then
         prompt_prefix="\n$prompt_prefix"
     fi
@@ -207,11 +206,10 @@ _seafly_command_prompt() {
     # Normal prompt indicates that the last command ran successfully.
     # Alert prompt indicates that the last command failed.
     _seafly_colors=("$SEAFLY_ALERT_COLOR" "$SEAFLY_NORMAL_COLOR")
-    local prompt_end
+
+    local prompt_end="\[\${_seafly_colors[\$((!\$?))]}\] $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
     if [[ $SEAFLY_MULTILINE = 1 ]]; then
-        prompt_end="\[\n\${_seafly_colors[\$((!\$?))]}\] $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
-    else
-        prompt_end="\[\${_seafly_colors[\$((!\$?))]}\] $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
+        prompt_end="\n$prompt_end"
     fi
 
     PS1="$prompt_prefix$prompt_start$prompt_middle$prompt_end"

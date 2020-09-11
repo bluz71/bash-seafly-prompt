@@ -23,32 +23,22 @@ The font in use is [Iosevka](https://github.com/be5invis/Iosevka).
 Layout
 ------
 
-_seafly_ as a single line prompt that is divided into the following segments:
+_seafly_ is a prompt that displays the following segments when using the
+default layout:
 
 ```
-<Optional Prefix> <Host> <Git Branch> <Git Indicators> <Current Path> <Prompt Symbol>
+<Optional Prefix> <Optional User/Host> <Git Branch> <Git Indicators> <Current Path> <Prompt Symbol>
 ```
 
-Note, when `SEAFLY_LAYOUT=2` is set the prompt will be:
+Note, when `SEAFLY_LAYOUT=2` is set the prompt will instead display as:
 
 ```
-<Optional Prefix> <Host> <Current Path> <Git Branch> <Git Indicators> <Prompt Symbol>
+<Optional Prefix> <Optional User/Host> <Current Path> <Git Branch> <Git Indicators> <Prompt Symbol>
 ```
 
-When `SEAFLY_SHOW_HOST=0` is set the prompt will be:
-
-```
-<Optional Prefix> <Git Branch> <Git Indicators> <Current Path> <Prompt Symbol>
-```
-
-or the following with `SEAFLY_LAYOUT=2`:
-
-```
-<Optional Prefix> <Current Path> <Git Branch> <Git Indicators> <Prompt Symbol>
-```
-
-seafly as a multiline prompt takes the same layout options as above with a newline
-at the begining and before `<Prompt Symbol>`.
+_seafly_ can also display as a multiline prompt when `SEAFLY_MULTILINE=1` is
+set. The layout will be the same as listed above but with additional newlines
+prior to the prefix and prompt symbol.
 
 Please refer to the configuration section below for more details.
 
@@ -105,13 +95,13 @@ Requirements
 
 A modern 256 or true color terminal is required.
 
-Please also make sure the `TERM` environment variable is set to either
-`xterm-256color` or `screen-256color`.
+Please also make sure the `TERM` environment variable is set to
+`xterm-256color`, `screen-256color` or equivalent terminal setting.
 
-Setting `TERM` to `xterm-256color` is usually done at the terminal level
-either in a preferences dialog or a related configuration file, if required at
-all. Note, some modern terminals will automatically set 256 colors by default,
-for example, modern versions of [Gnome
+For example setting `TERM` to `xterm-256color` is usually done at the terminal
+level either in a preferences dialog or a related configuration file, if
+required at all. Note, some modern terminals will automatically set 256 colors
+by default, for example, modern versions of [Gnome
 Terminal](https://wiki.gnome.org/Apps/Terminal).
 
 Setting `TERM` to `screen-256color` should only be done for
@@ -122,6 +112,10 @@ please add the following to your `~/.tmux.conf` file:
 set -g default-terminal "screen-256color"
 set -ga terminal-overrides ',xterm-256color:Tc'
 ```
+
+Note, modern terminals such as [Alacritty](https://github.com/alacritty) and
+[kitty](https://sw.kovidgoyal.net/kitty) provide their own terminfo definitions
+which are also supported by _seafly_ prompt.
 
 Installation
 ------------
@@ -184,10 +178,10 @@ Note, a dash character denotes an unset default value.
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
 | **`SEAFLY_PRE_COMMAND`**     | A command to run each time the prompt is displayed.<br>Please make sure any pre-command is very fast.<br>For example, `"history -a"`.                        | -             |
 | **`SEAFLY_PROMPT_PREFIX`**   | A shell script snippet to populate the _optional prefix_ segment.<br>Please make sure the script snippet is simple and fast.<br>Refer to the examples below. | -             |
-| **`SEAFLY_SHOW_USER`**       | Display the current user in the host segment.<br>Set to `1` to display the user.                                                                             | 0             |
-| **`SEAFLY_SHOW_HOST`**       | Display the current hostname in the host segment.<br>Set to `1` to display the host.                                                                             | 1             |
 | **`SEAFLY_LAYOUT`**          | Specify the preferred layout.<br>Layout `1` will display Git details followed by path.<br>Layout `2` will flip the Git details and path.                     | 1             |
-| **`SEAFLY_MULTILINE`**          | Specify the preferred multiline layout.<br>Multiline `1` will display the prompt over 2 lines.<br>Multiline `0` will provide a single line prompt.                     | 0             |
+| **`SEAFLY_MULTILINE`**       | Specify multiline layout.<br>`SEAFLY_MULTILINE=1` will display the prompt over multiple lines.                                                               | 0             |
+| **`SEAFLY_SHOW_USER`**       | Display the current user in the user/host segment.<br>Set to `1` to display the user.                                                                        | 0             |
+| **`SEAFLY_SHOW_HOST`**       | Display the current hostname in the user/host segment.<br>Set to `0` to not display the host.                                                                | 1             |
 | **`PROMPT_DIRTRIM`**         | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path.                                     | 4             |
 | **`GIT_PS1_SHOWDIRTYSTATE`** | Indicate the presence of Git modifications.<br>Set to `0` to skip.                                                                                           | 1             |
 | **`GIT_PS1_SHOWSTASHSTATE`** | Indicate the presence of Git stashes.<br>Set to `0` to skip.                                                                                                 | 1             |
@@ -229,7 +223,7 @@ to improve performance for very large repositories:
 git config feature.manyFiles true
 ```
 
-:rocket: Again, for best prompt rendering performance, when in Git repositories,
+:rocket: Note, for best prompt rendering performance, when in Git repositories,
 please install and use the [gitstatus](https://github.com/romkatv/gitstatus)
 command.
 
