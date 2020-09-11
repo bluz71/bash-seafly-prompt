@@ -7,8 +7,8 @@
 # Non-interactive shells don't have a prompt, exit early.
 [[ $- =~ i ]] || return 0
 
-# Set a simple prompt for non-256color and non-kitty terminals.
-if [[ $TERM != *-256color ]] && [[ $TERM != *-kitty ]]; then
+# Set a simple prompt for non-256color and non-kitty or alacritty terminals.
+if [[ $TERM != *-256color ]] && [[ $TERM != *-kitty ]] && [[ $TERM != alacritty ]]; then
     PS1='\h \w > '
     return 0
 fi
@@ -33,7 +33,9 @@ fi
 
 # Default layout settings.
 : ${SEAFLY_SHOW_USER:=0}
+: ${SEAFLY_SHOW_HOST:=1}
 : ${SEAFLY_LAYOUT:=1}
+: ${SEAFLY_MULTILINE:=0}
 
 # Default symbols used in the prompt.
 : ${SEAFLY_PROMPT_SYMBOL:="❯"}
@@ -178,10 +180,16 @@ _seafly_command_prompt() {
         prompt_prefix="\[$SEAFLY_PREFIX_COLOR\]$prefix_value "
     fi
 
+    if [[ $SEAFLY_MULTILINE = 1 ]]; then
+        prompt_prefix="\n$prompt_prefix"
+    fi
+
     local prompt_start
-    if [[ $SEAFLY_SHOW_USER = 1 ]]; then
+    if [[ $SEAFLY_SHOW_USER = 1 && $SEAFLY_SHOW_HOST = 1 ]]; then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h"
-    else
+    elif [[ $SEAFLY_SHOW_USER = 1 ]]; then
+        prompt_start="\[$SEAFLY_HOST_COLOR\]\u"
+    elif [[ $SEAFLY_SHOW_HOST = 1 ]]; then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\h"
     fi
 
@@ -199,7 +207,12 @@ _seafly_command_prompt() {
     # Normal prompt indicates that the last command ran successfully.
     # Alert prompt indicates that the last command failed.
     _seafly_colors=("$SEAFLY_ALERT_COLOR" "$SEAFLY_NORMAL_COLOR")
-    local prompt_end="\[\${_seafly_colors[\$((!\$?))]}\] $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
+    local prompt_end
+    if [[ $SEAFLY_MULTILINE = 1 ]]; then
+        prompt_end="\[\n\${_seafly_colors[\$((!\$?))]}\] $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
+    else
+        prompt_end="\[\${_seafly_colors[\$((!\$?))]}\] $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
+    fi
 
     PS1="$prompt_prefix$prompt_start$prompt_middle$prompt_end"
     PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PS2_PROMPT_SYMBOL\[\$NOCOLOR\] "
