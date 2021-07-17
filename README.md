@@ -205,6 +205,13 @@ Note, a dash character denotes an unset default value.
     SEAFLY_PROMPT_PREFIX='if [[ -n $VIRTUAL_ENV ]]; then echo "($(basename $VIRTUAL_ENV))"; fi'
     ```
 
+-   When using the [Node Version Manager](https://github.com/nvm-sh/nvm)
+    display the name of the current JavaScript version within parenthesis:
+
+    ```sh
+    SEAFLY_PROMPT_PREFIX='echo "($(nvm current))"'
+    ```
+
 :bomb: In certain Git repositories, calculating dirty-state can be slow,
 either due to the size of the repository or the speed of the file-system
 hosting the repository. If so, the prompt may render slowly. One can either
