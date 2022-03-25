@@ -264,6 +264,11 @@ chart](https://jonasjacek.github.io/colors) when customizing _seafly_ colors.
 | **`SEAFLY_GIT_COLOR`**    | Git branch, stash and optional prefix/suffix | `$(tput setaf 147)` | ![normal](https://via.placeholder.com/32/afafff?text=+) |
 | **`SEAFLY_PATH_COLOR`**   | Current directory path                       | `$(tput setaf 150)` | ![normal](https://via.placeholder.com/32/afd787?text=+) |
 
+Sponsor
+-------
+
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/bluz71)
+
 License
 -------
 
