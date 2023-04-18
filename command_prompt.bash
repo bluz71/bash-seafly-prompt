@@ -113,7 +113,7 @@ _seafly_git_optimized() {
     if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
         spacer=" "
     fi
-    _seafly_git=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
+    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
 }
 
 # Collate Git details using just the 'git' command.
@@ -167,7 +167,7 @@ _seafly_git_fallback() {
     if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
         spacer=" "
     fi
-    _seafly_git=" $SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX"
+    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
 }
 
 _seafly_command_prompt() {
@@ -185,11 +185,11 @@ _seafly_command_prompt() {
 
     local prompt_start
     if [[ $SEAFLY_SHOW_USER = 1 && $SEAFLY_SHOW_HOST = 1 ]]; then
-        prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h"
+        prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h "
     elif [[ $SEAFLY_SHOW_USER = 1 ]]; then
-        prompt_start="\[$SEAFLY_HOST_COLOR\]\u"
+        prompt_start="\[$SEAFLY_HOST_COLOR\]\u "
     elif [[ $SEAFLY_SHOW_HOST = 1 ]]; then
-        prompt_start="\[$SEAFLY_HOST_COLOR\]\h"
+        prompt_start="\[$SEAFLY_HOST_COLOR\]\h "
     fi
 
     # Collate Git details, if applicable, for the current directory.
@@ -197,9 +197,9 @@ _seafly_command_prompt() {
 
     local prompt_middle
     if [[ $SEAFLY_LAYOUT = 1 ]]; then
-        prompt_middle="\[$SEAFLY_GIT_COLOR\]$_seafly_git\[$SEAFLY_PATH_COLOR\] \w"
+        prompt_middle="\[$SEAFLY_GIT_COLOR\]$_seafly_git\[$SEAFLY_PATH_COLOR\]\w "
     else
-        prompt_middle="\[$SEAFLY_PATH_COLOR\] \w\[$SEAFLY_GIT_COLOR\]$_seafly_git"
+        prompt_middle="\[$SEAFLY_PATH_COLOR\]\w\[$SEAFLY_GIT_COLOR\] $_seafly_git"
     fi
     unset _seafly_git
 
@@ -207,7 +207,7 @@ _seafly_command_prompt() {
     # Alert prompt indicates that the last command failed.
     _seafly_colors=("$SEAFLY_ALERT_COLOR" "$SEAFLY_NORMAL_COLOR")
 
-    local prompt_end="\[\${_seafly_colors[\$((!\$?))]}\] $SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
+    local prompt_end="\[\${_seafly_colors[\$((!\$?))]}\]$SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
     if [[ $SEAFLY_MULTILINE = 1 ]]; then
         prompt_end="\n$prompt_end"
     fi
