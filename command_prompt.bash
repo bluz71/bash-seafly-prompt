@@ -19,7 +19,7 @@ fi
 : ${SEAFLY_ALERT_COLOR:=$(tput setaf 203)}
 : ${SEAFLY_HOST_COLOR:=$(tput setaf 255)}
 : ${SEAFLY_GIT_COLOR:=$(tput setaf 147)}
-: ${SEAFLY_PATH_COLOR:=$(tput setaf 150)}
+: ${SEAFLY_PATH_COLOR:=$(tput setaf 114)}
 : ${NOCOLOR:=$(tput sgr0)}
 
 # Shorten directory paths to a maximum of four components unless PROMPT_DIRTRIM
