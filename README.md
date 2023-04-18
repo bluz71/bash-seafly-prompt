@@ -257,7 +257,7 @@ chart](https://jonasjacek.github.io/colors) when customizing _seafly_ colors.
 
 | Option                    | Description                                  | Default Value       | Color                                                   |
 | ------------------------- | -------------------------------------------- | ------------------- | ------------------------------------------------------- |
-| **`SEAFLY_PREFIX_COLOR`** | _Optional prefix_ segment                    | `$(tput setaf 153)` | ![normal](https://place-hold.it/32/afd7ff?text=+) |
+| **`SEAFLY_PREFIX_COLOR`** | _Optional prefix_ segment                    | `$(tput setaf 79)`  | ![normal](https://place-hold.it/32/5fd7af?text=+) |
 | **`SEAFLY_NORMAL_COLOR`** | Normal prompt and certain Git indicators     | `$(tput setaf 111)` | ![normal](https://place-hold.it/32/87afff?text=+) |
 | **`SEAFLY_ALERT_COLOR`**  | Alert prompt and Git dirty indicator         | `$(tput setaf 203)` | ![normal](https://place-hold.it/32/ff5f5f?text=+) |
 | **`SEAFLY_HOST_COLOR`**   | Host segment                                 | `$(tput setaf 255)` | ![normal](https://place-hold.it/32/eeeeee?text=+) |
