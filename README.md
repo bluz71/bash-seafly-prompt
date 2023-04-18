@@ -189,14 +189,6 @@ Note, a dash character denotes an unset default value.
 
 :gift: A few **`SEAFLY_PROMPT_PREFIX`** examples:
 
--   When using the [chruby](https://github.com/postmodern/chruby) Ruby version
-    manager and when in a Ruby project base directory display the current
-    Ruby version within parenthesis:
-
-    ```sh
-    SEAFLY_PROMPT_PREFIX='if [[ -f Gemfile ]]; then echo "($(chruby | grep "*" | cut -d" " -f3))"; fi'
-    ```
-
 -   When in an active Python [Virtual Environment](
     https://realpython.com/python-virtual-environments-a-primer)
     display the name of the current environment within parenthesis:
@@ -205,11 +197,20 @@ Note, a dash character denotes an unset default value.
     SEAFLY_PROMPT_PREFIX='if [[ -n $VIRTUAL_ENV ]]; then echo "($(basename $VIRTUAL_ENV))"; fi'
     ```
 
--   When using the [Node Version Manager](https://github.com/nvm-sh/nvm)
-    display the name of the current JavaScript version within parenthesis:
+-   When using the [Node Version Manager](https://github.com/nvm-sh/nvm) and
+    when in a JavaScript project display the name of the current JavaScript
+    version within parenthesis:
 
     ```sh
-    SEAFLY_PROMPT_PREFIX='echo "($(nvm current))"'
+    SEAFLY_PROMPT_PREFIX='if [[ -f Gemfile ]]; then echo "($(nvm current))"; fi'
+    ```
+
+-   When using the [chruby](https://github.com/postmodern/chruby) Ruby version
+    manager and when in a Ruby project base directory display the current
+    Ruby version within parenthesis:
+
+    ```sh
+    SEAFLY_PROMPT_PREFIX='if [[ -f Gemfile ]]; then echo "($(chruby | grep "*" | cut -d" " -f3))"; fi'
     ```
 
 :bomb: In certain Git repositories, calculating dirty-state can be slow,
