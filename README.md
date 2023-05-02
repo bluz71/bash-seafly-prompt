@@ -181,10 +181,10 @@ Which to use?
 
 Performance metrics are listed for these four repositories:
 
-- `dotfiles`, small repository with 189 managed files
-- `rails`, medium repository with 4,574 managed files
-- `linux`, large repository with 79,878 managed files
-- `chromium`, extra large repository with 413,542 managed files
+- _dotfiles_, small repository with 189 managed files
+- _rails_, medium repository with 4,574 managed files
+- _linux_, large repository with 79,878 managed files
+- _chromium_, extra large repository with 413,542 managed files
 
 Listed is the average time to compute the prompt function.
 
@@ -192,24 +192,24 @@ Mid-range Linux desktop Core i5 with SATA SSD:
 
 | Repository     | `git-status-fly` | `gitstatus` | `git` fallback |
 |----------------|------------------|-------------|----------------|
-| `dotfiles`     | `16ms`           | `12ms`      | `28ms`         |
-| `rails`        | `21ms`           | `15ms`      | `33ms`         |
-| `linux`(*)     | `61ms`           | `42ms`      | `80ms`         |
-| `chromium` (*) | `260ms`          | `160ms`     | `305ms`        |
+| _dotfiles_     | `16ms`           | `12ms`      | `28ms`         |
+| _rails_        | `21ms`           | `15ms`      | `33ms`         |
+| _linux_(*)     | `61ms`           | `42ms`      | `80ms`         |
+| _chromium_ (*) | `260ms`          | `160ms`     | `305ms`        |
 
 M1 Macbook Air:
 
 | Repository     | `git-status-fly` | `gitstatus` | `git` fallback |
 |----------------|------------------|-------------|----------------|
-| `dotfiles`     | `32ms`           | `12ms`      | `61ms`         |
-| `rails`        | `45ms`           | `29ms`      | `73ms`         |
-| `linux` (!)    | `60ms`           | `165ms`     | `105ms`         |
-| `chromium` (!) | `102ms`          | `2500ms`    | `155ms`        |
+| _dotfiles_     | `32ms`           | `12ms`      | `61ms`         |
+| _rails_        | `45ms`           | `29ms`      | `73ms`         |
+| _linux_ (!)    | `60ms`           | `165ms`     | `105ms`         |
+| _chromium_ (!) | `102ms`          | `2500ms`    | `155ms`        |
 
-- `(*)`, the `git config feature.manyFiles true` option was enabled  as
+- **(*)**, the `git config feature.manyFiles true` option was enabled  as
   [documented here](https://github.blog/2019-11-03-highlights-from-git-2-24/)
 
-- `(!)`, in addition to enabling `manyFiles`, the `git config core.fsmonitor
+- **(!)**, in addition to enabling `manyFiles`, the `git config core.fsmonitor
   true` file system monitor was also enabled as [documented
   here](https://github.blog/2022-06-29-improve-git-monorepo-performance-with-a-file-system-monitor)
 
