@@ -57,18 +57,67 @@ fi
 # Optional command that outputs as the prompt prefix.
 : ${SEAFLY_PROMPT_PREFIX:=""}
 
-# Collate Git details using the optimized
+# Collate Git details using the
+# [git-status-fly](https://github.com/bluz71/git-status-fly) utility.
+#
+_seafly_git_status_fly() {
+    . <(git-status-fly)
+    [[ -n "$GSF_REPOSITORY" ]] || return
+
+    # We are in a Git repository.
+    local branch=$GSF_BRANCH
+    if [[ $branch == "HEAD" ]]; then
+        branch="detached*$(git rev-parse --short HEAD 2>/dev/null)"
+    fi
+    branch=${branch//\\/\\\\}  # Escape backslashes
+    branch=${branch//\$/\\\$}  # Escape dollars
+
+    local dirty
+    local staged
+    if [[ $branch != "detached*" &&
+          $GIT_PS1_SHOWDIRTYSTATE != 0 &&
+          $(git config --bool bash.showDirtyState) != "false" ]]; then
+        [[ -z $GSF_DIRTY ]] || dirty=$SEAFLY_GIT_DIRTY
+        [[ -z $GSF_STAGED ]] || staged=$SEAFLY_GIT_STAGED
+    fi
+
+    local stash
+    if [[ $GIT_PS1_SHOWSTASHSTATE != 0 ]]; then
+        [[ -z $GSF_STASH ]] || stash=$SEAFLY_GIT_STASH
+    fi
+
+    local upstream
+    if [[ $GIT_PS1_SHOWUPSTREAM != 0 && -n $GSF_UPSTREAM ]]; then
+        if [[ $GSF_UPSTREAM -eq 2 ]]; then
+            upstream=$SEAFLY_GIT_DIVERGED
+        elif [[ $GSF_UPSTREAM -eq 1 ]]; then
+            upstream=$SEAFLY_GIT_AHEAD
+        elif [[ $GSF_UPSTREAM -lt 0 ]]; then
+            upstream=$SEAFLY_GIT_BEHIND
+        elif [[ $GSF_UPSTREAM -eq 0 ]]; then
+            upstream="="
+        fi
+    fi
+
+    local spacer
+    if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
+        spacer=" "
+    fi
+    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
+}
+
+# Collate Git details using the
 # [gitstatus](https://github.com/romkatv/gitstatus) command.
 #
-_seafly_git_optimized() {
+_seafly_gitstatus() {
     local flags
     # Note, gitstatus will automatically set '-p' if the local repository has
     # set 'bash.showDirtyState' to false.
     [[ $GIT_PS1_SHOWDIRTYSTATE == 0  ]] && flags=-p # Avoid unnecessary work
     if ! hash gitstatus_query 2>/dev/null || ! gitstatus_query $flags; then
         # Either gitstatus_query does not exist or it failed, use fallback
-        # instead.
-        _seafly_git_fallback
+        # git command instead.
+        _seafly_git_command
         return
     fi
     [[ $VCS_STATUS_RESULT == ok-sync ]] || return
@@ -118,7 +167,7 @@ _seafly_git_optimized() {
 
 # Collate Git details using just the 'git' command.
 #
-_seafly_git_fallback() {
+_seafly_git_command() {
     local is_git_repo
     if [[ $(git rev-parse --is-inside-work-tree --is-bare-repository 2>/dev/null) =~ true ]]; then
         is_git_repo=1
@@ -179,24 +228,30 @@ _seafly_command_prompt() {
     if [[ -n $prefix_value ]]; then
         prompt_prefix="\[$SEAFLY_PREFIX_COLOR\]$prefix_value "
     fi
-    if [[ $SEAFLY_MULTILINE = 1 ]]; then
+    if [[ $SEAFLY_MULTILINE == 1 ]]; then
         prompt_prefix="\n$prompt_prefix"
     fi
 
     local prompt_start
-    if [[ $SEAFLY_SHOW_USER = 1 && $SEAFLY_SHOW_HOST = 1 ]]; then
+    if [[ $SEAFLY_SHOW_USER == 1 && $SEAFLY_SHOW_HOST == 1 ]]; then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h "
-    elif [[ $SEAFLY_SHOW_USER = 1 ]]; then
+    elif [[ $SEAFLY_SHOW_USER == 1 ]]; then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\u "
-    elif [[ $SEAFLY_SHOW_HOST = 1 ]]; then
+    elif [[ $SEAFLY_SHOW_HOST == 1 ]]; then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\h "
     fi
 
     # Collate Git details, if applicable, for the current directory.
-    _seafly_git_optimized
+    if [[ $SEAFLY_GIT_STATUS_FLY == 1 ]]; then
+        _seafly_git_status_fly
+    elif [[ $SEAFLY_GITSTATUS == 1 ]]; then
+        _seafly_gitstatus
+    else
+        _seafly_git_command
+    fi
 
     local prompt_middle
-    if [[ $SEAFLY_LAYOUT = 1 ]]; then
+    if [[ $SEAFLY_LAYOUT == 1 ]]; then
         prompt_middle="\[$SEAFLY_GIT_COLOR\]$_seafly_git\[$SEAFLY_PATH_COLOR\]\w "
     else
         prompt_middle="\[$SEAFLY_PATH_COLOR\]\w\[$SEAFLY_GIT_COLOR\] $_seafly_git"
@@ -208,7 +263,7 @@ _seafly_command_prompt() {
     _seafly_colors=("$SEAFLY_ALERT_COLOR" "$SEAFLY_NORMAL_COLOR")
 
     local prompt_end="\[\${_seafly_colors[\$((!\$?))]}\]$SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
-    if [[ $SEAFLY_MULTILINE = 1 ]]; then
+    if [[ $SEAFLY_MULTILINE == 1 ]]; then
         prompt_end="\n$prompt_end"
     fi
 
@@ -216,10 +271,15 @@ _seafly_command_prompt() {
     PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PS2_PROMPT_SYMBOL\[\$NOCOLOR\] "
 }
 
-# Use [gitstatus](https://github.com/romkatv/gitstatus) if it is available.
-if [[ -r $SEAFLY_GITSTATUS_DIR/gitstatus.plugin.sh ]]; then
+# Use [git-status-fly](https://github.com/bluz71/git-status-fly) if it is
+# available.
+if [[ -x $(command -v git-status-fly) ]]; then
+    export SEAFLY_GIT_STATUS_FLY=1
+# Else use [gitstatus](https://github.com/romkatv/gitstatus) if it is available.
+elif [[ -r $SEAFLY_GITSTATUS_DIR/gitstatus.plugin.sh ]]; then
     source "$SEAFLY_GITSTATUS_DIR"/gitstatus.plugin.sh
     gitstatus_stop && gitstatus_start -c 0 -d 0
+    export SEAFLY_GITSTATUS=1
 fi
 
 # Bind and call the '_seafly_command_prompt' function as the Bash prompt.

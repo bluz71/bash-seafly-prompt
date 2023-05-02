@@ -10,8 +10,9 @@ Inspiration provided by:
 - [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt)
 - [sapegin/dotfiles Bash prompt](https://github.com/sapegin/dotfiles/blob/dd063f9c30de7d2234e8accdb5272a5cc0a3388b/includes/bash_prompt.bash)
 
-:rocket: For maximum performance, _seafly_ will use, if available, the excellent
-[gitstatus](https://github.com/romkatv/gitstatus) command.
+:rocket: For maximum performance, _seafly_ will use, if available, either the
+[git-status-fly](https://github.com/bluz71/git-status-fly) or
+[gitstatus](https://github.com/romkatv/gitstatus) utilities.
 
 Screenshot
 ----------
@@ -139,19 +140,24 @@ cd ~/.bash-seafly-prompt
 git pull
 ```
 
+git-status-fly
+--------------
+
+The [git-status-fly](https://github.com/bluz71/git-status-fly) utility is a
+simple [Rust](https://www.rust-lang.org) implemented `git status` processor.
+Parsing the output of `git status` using shell commands, such as `grep` and
+`awk`, is much slower than using an optimized binary such as _git-status-fly_.
+
+Install the _git-status-fly_ somewhere in the current `$PATH`.
+
 gitstatus
 ---------
 
-The [gitstatus](https://github.com/romkatv/gitstatus) command, a
+The [gitstatus](https://github.com/romkatv/gitstatus) utility, a
 high-performance alternative to the `git status` command, is designed
 specifically for low-latency command prompt usage.
 
-The _seafly_ prompt does not require _gitstatus_, but it is **strongly**
-recommended to install and use this command, especially when dealing with large
-Git repositories. Git detail collation will otherwise fallback to the slower
-`git` command when _gitstatus_ is not available.
-
-If possible, please install _gitstatus_:
+Install _gitstatus_:
 
 ```sh
 git clone --depth 1 https://github.com/romkatv/gitstatus.git ~/.gitstatus
@@ -163,6 +169,51 @@ its location in an environment variable:
 ```sh
 export SEAFLY_GITSTATUS_DIR=/location/of/gitstatus
 ```
+
+Git Performance
+---------------
+
+_seafly_ provides three ways to gather Git status, either of the two previous
+utilities: _git-status-fly_, _gitstatus_, or a fallback method which collates
+details using the `git` command.
+
+Which to use?
+
+Performance metrics are listed for these four repositories:
+
+- `dotfiles`, small repository with 189 managed files
+- `rails`, medium repository with 4,574 managed files
+- `linux`, large repository with 79,878 managed files
+- `chromium`, extra large repository with 413,542 managed files
+
+Listed is the average time to compute the prompt function.
+
+Mid-range Linux desktop Core i5 with SATA SSD:
+
+| Repository     | `git-status-fly` | `gitstatus` | `git` fallback |
+|----------------|------------------|-------------|----------------|
+| `dotfiles`     | `16ms`           | `12ms`      | `28ms`         |
+| `rails`        | `21ms`           | `15ms`      | `33ms`         |
+| `linux`(*)     | `61ms`           | `42ms`      | `80ms`         |
+| `chromium` (*) | `260ms`          | `160ms`     | `305ms`        |
+
+M1 Macbook Air:
+
+| Repository     | `git-status-fly` | `gitstatus` | `git` fallback |
+|----------------|------------------|-------------|----------------|
+| `dotfiles`     | `32ms`           | `12ms`      | `61ms`         |
+| `rails`        | `45ms`           | `29ms`      | `73ms`         |
+| `linux` (!)    | `60ms`           | `165ms`     | `105ms`         |
+| `chromium` (!) | `102ms`          | `2500ms`    | `155ms`        |
+
+- `(*)`, the `git config feature.manyFiles true` option was enabled  as
+  [documented here](https://github.blog/2019-11-03-highlights-from-git-2-24/)
+
+- `(!)`, in addition to enabling `manyFiles`, the `git config core.fsmonitor
+  true` file system monitor was also enabled as [documented
+  here](https://github.blog/2022-06-29-improve-git-monorepo-performance-with-a-file-system-monitor)
+
+Note, as of May 2023 `fsmonitor` is implemented only for Windows and macOS.
 
 Configuration
 -------------
