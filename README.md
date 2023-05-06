@@ -292,7 +292,7 @@ command.
 | ------------------------------ | ------------------------------------------------------------------------------------- | ------------- |
 | **`SEAFLY_PROMPT_SYMBOL`**     | The prompt symbol                                                                     | ❯             |
 | **`SEAFLY_PS2_PROMPT_SYMBOL`** | The `PS2` secondary prompt symbol                                                     | ❯             |
-| **`SEAFLY_GIT_PREFIX`**        | Symbol to the left of the Git branch                                                  | -             |
+| **`SEAFLY_GIT_PREFIX`**        | Symbol to the left of the Git branch                                                  |              |
 | **`SEAFLY_GIT_SUFFIX`**        | Symbol to the right of the Git indicators                                             | -             |
 | **`SEAFLY_GIT_DIRTY`**         | Symbol indicating that a Git repository contains modifications                        | ✗             |
 | **`SEAFLY_GIT_STAGED`**        | Symbol indicating that a Git repository contains staged changes                       | ✓             |

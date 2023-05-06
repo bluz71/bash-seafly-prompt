@@ -40,7 +40,7 @@ fi
 # Default symbols used in the prompt.
 : ${SEAFLY_PROMPT_SYMBOL:="❯"}
 : ${SEAFLY_PS2_PROMPT_SYMBOL:="❯"}
-: ${SEAFLY_GIT_PREFIX:=""}
+: ${SEAFLY_GIT_PREFIX:=" "}
 : ${SEAFLY_GIT_SUFFIX:=""}
 : ${SEAFLY_GIT_DIRTY:="✗"}
 : ${SEAFLY_GIT_STAGED:="✓"}
