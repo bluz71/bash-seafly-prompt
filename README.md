@@ -170,16 +170,21 @@ its location in an environment variable:
 export SEAFLY_GITSTATUS_DIR=/location/of/gitstatus
 ```
 
+Be aware, unlike _git-status-fly_ which is just a standard executable run once
+per prompt update, _gitstatus_ on the other hand is a daemon process that will
+launch once on shell startup and will then be interacted with via IPC per prompt
+update. The _gitstatus_ daemon startup will incur a 5 to 10ms cost.
+
 Git Performance
 ---------------
 
 _seafly_ provides three ways to gather Git status, either of the two previous
 utilities: _git-status-fly_, _gitstatus_, or a fallback method which collates
-details using the `git` command.
+details using just the `git` command.
 
-Which to use?
+Which to use? See the following performance results and decide.
 
-Performance metrics are listed for these four repositories:
+Performance metrics are listed for the following four repositories:
 
 - _dotfiles_, small repository with 189 managed files
 - _rails_, medium repository with 4,574 managed files
@@ -213,7 +218,10 @@ M1 Macbook Air:
   true` file system monitor was also enabled as [documented
   here](https://github.blog/2022-06-29-improve-git-monorepo-performance-with-a-file-system-monitor)
 
-Note, as of May 2023 `fsmonitor` is implemented only for Windows and macOS.
+Note, as of May 2023 `fsmonitor` is implemented only for Windows and macOS, it
+is not available for Linux.
+
+In practise, a prompt startup time under 40ms feels instant.
 
 Configuration
 -------------
