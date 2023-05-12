@@ -88,13 +88,13 @@ _seafly_git_status_fly() {
 
     local upstream
     if [[ $GIT_PS1_SHOWUPSTREAM -ne 0 && -n $GSF_UPSTREAM ]]; then
-        if [[ $GSF_UPSTREAM -eq 2 ]]; then
+        if (( GSF_UPSTREAM == 2 )); then
             upstream=$SEAFLY_GIT_DIVERGED
-        elif [[ $GSF_UPSTREAM -eq 1 ]]; then
+        elif (( GSF_UPSTREAM == 1 )); then
             upstream=$SEAFLY_GIT_AHEAD
-        elif [[ $GSF_UPSTREAM -lt 0 ]]; then
+        elif (( GSF_UPSTREAM < 0 )); then
             upstream=$SEAFLY_GIT_BEHIND
-        elif [[ $GSF_UPSTREAM -eq 0 ]]; then
+        elif (( GSF_UPSTREAM == 0 )); then
             upstream="="
         fi
     fi
@@ -149,9 +149,9 @@ _seafly_gitstatus() {
         if [[ $VCS_STATUS_COMMITS_AHEAD -gt 0 &&
               $VCS_STATUS_COMMITS_BEHIND -gt 0 ]]; then
             upstream=$SEAFLY_GIT_DIVERGED
-        elif [[ $VCS_STATUS_COMMITS_AHEAD -gt 0 ]]; then
+        elif (( VCS_STATUS_COMMITS_AHEAD > 0 )); then
             upstream=$SEAFLY_GIT_AHEAD
-        elif [[ $VCS_STATUS_COMMITS_BEHIND -gt 0 ]]; then
+        elif (( VCS_STATUS_COMMITS_BEHIND > 0 )); then
             upstream=$SEAFLY_GIT_BEHIND
         elif [[ -n $VCS_STATUS_REMOTE_NAME ]]; then
             upstream="="
@@ -172,7 +172,7 @@ _seafly_git_command() {
     if [[ $(git rev-parse --is-inside-work-tree --is-bare-repository 2>/dev/null) =~ true ]]; then
         is_git_repo=1
     fi
-    [[ $is_git_repo -eq 1 ]] || return
+    (( is_git_repo == 1 )) || return
 
     # We are in a Git repository.
     local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
@@ -228,30 +228,30 @@ _seafly_command_prompt() {
     if [[ -n $prefix_value ]]; then
         prompt_prefix="\[$SEAFLY_PREFIX_COLOR\]$prefix_value "
     fi
-    if [[ $SEAFLY_MULTILINE -eq 1 ]]; then
+    if (( SEAFLY_MULTILINE == 1 )); then
         prompt_prefix="\n$prompt_prefix"
     fi
 
     local prompt_start
     if [[ $SEAFLY_SHOW_USER -eq 1 && $SEAFLY_SHOW_HOST -eq 1 ]]; then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h "
-    elif [[ $SEAFLY_SHOW_USER -eq 1 ]]; then
+    elif (( SEAFLY_SHOW_USER == 1 )); then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\u "
-    elif [[ $SEAFLY_SHOW_HOST -eq 1 ]]; then
+    elif (( SEAFLY_SHOW_HOST == 1 )); then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\h "
     fi
 
     # Collate Git details, if applicable, for the current directory.
-    if [[ $SEAFLY_GIT_STATUS_FLY -eq 1 ]]; then
+    if (( SEAFLY_GIT_STATUS_FLY == 1 )); then
         _seafly_git_status_fly
-    elif [[ $SEAFLY_GITSTATUS -eq 1 ]]; then
+    elif (( SEAFLY_GITSTATUS == 1 )); then
         _seafly_gitstatus
     else
         _seafly_git_command
     fi
 
     local prompt_middle
-    if [[ $SEAFLY_LAYOUT -eq 1 ]]; then
+    if (( SEAFLY_LAYOUT == 1 )); then
         prompt_middle="\[$SEAFLY_GIT_COLOR\]$_seafly_git\[$SEAFLY_PATH_COLOR\]\w "
     else
         prompt_middle="\[$SEAFLY_PATH_COLOR\]\w\[$SEAFLY_GIT_COLOR\] $_seafly_git"
@@ -263,7 +263,7 @@ _seafly_command_prompt() {
     _seafly_colors=("$SEAFLY_ALERT_COLOR" "$SEAFLY_NORMAL_COLOR")
 
     local prompt_end="\[\${_seafly_colors[\$((!\$?))]}\]$SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
-    if [[ $SEAFLY_MULTILINE -eq 1 ]]; then
+    if (( SEAFLY_MULTILINE == 1 )); then
         prompt_end="\n$prompt_end"
     fi
 
