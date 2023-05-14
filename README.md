@@ -233,18 +233,18 @@ Note, a dash character denotes an unset default value.
 
 ### Behaviour
 
-| Option                       | Description                                                                                                                                                  | Default Value |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
-| **`SEAFLY_PRE_COMMAND`**     | A command to run each time the prompt is displayed.<br>Please make sure any pre-command is very fast.<br>For example, `"history -a"`.                        | -             |
-| **`SEAFLY_PROMPT_PREFIX`**   | A shell script snippet to populate the _optional prefix_ segment.<br>Please make sure the script snippet is simple and fast.<br>Refer to the examples below. | -             |
-| **`SEAFLY_LAYOUT`**          | Specify the preferred layout.<br>Layout `1` will display Git details followed by path.<br>Layout `2` will flip the Git details and path.                     | 1             |
-| **`SEAFLY_MULTILINE`**       | Specify multiline layout.<br>`SEAFLY_MULTILINE=1` will display the prompt over multiple lines.                                                               | 0             |
-| **`SEAFLY_SHOW_USER`**       | Display the current user in the user/host segment.<br>Set to `1` to display the user.                                                                        | 0             |
-| **`SEAFLY_SHOW_HOST`**       | Display the current hostname in the user/host segment.<br>Set to `0` to not display the host.                                                                | 1             |
-| **`PROMPT_DIRTRIM`**         | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path.                                     | 4             |
-| **`GIT_PS1_SHOWDIRTYSTATE`** | Indicate the presence of Git modifications.<br>Set to `0` to skip.                                                                                           | 1             |
-| **`GIT_PS1_SHOWSTASHSTATE`** | Indicate the presence of Git stashes.<br>Set to `0` to skip.                                                                                                 | 1             |
-| **`GIT_PS1_SHOWUPSTREAM`**   | Indicate differences exist between HEAD and upstream in a Git remote-tracking branch.<br>Set to `0` to skip.                                                 | 1             |
+| Option                       | Description                                                                                                                                                         | Default Value |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| **`SEAFLY_PRE_COMMAND`**     | A command to run each time the prompt is displayed.<br>Please make sure any pre-command is very fast.<br>For example, `"history -a"`.                               | -             |
+| **`SEAFLY_PROMPT_PREFIX`**   | A shell script snippet to populate the _optional prefix_ segment.<br>Please make sure the script snippet is simple and fast.<br>Refer to the examples below.        | -             |
+| **`SEAFLY_LAYOUT`**          | Specify the preferred layout.<br>Layout `1` will display Git details followed by path.<br>Layout `2` will flip the Git details and path.                            | 1             |
+| **`SEAFLY_MULTILINE`**       | Specify multiline layout.<br>`SEAFLY_MULTILINE=1` will display the prompt over multiple lines.                                                                      | 0             |
+| **`SEAFLY_SHOW_HOST`**       | Display the current hostname in the user/host segment.<br>Set to `0` to not display the host.<br>Set to `2` to only display the host in an SSH session.             | 1             |
+| **`SEAFLY_SHOW_USER`**       | Display the current user in the user/host segment.<br>Set to `1` to display the user. Note, when `SHOW_HOST` is set to `2` then display is limited to SSH sessions. | 0             |
+| **`PROMPT_DIRTRIM`**         | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path.                                            | 4             |
+| **`GIT_PS1_SHOWDIRTYSTATE`** | Indicate the presence of Git modifications.<br>Set to `0` to skip.                                                                                                  | 1             |
+| **`GIT_PS1_SHOWSTASHSTATE`** | Indicate the presence of Git stashes.<br>Set to `0` to skip.                                                                                                        | 1             |
+| **`GIT_PS1_SHOWUPSTREAM`**   | Indicate differences exist between HEAD and upstream in a Git remote-tracking branch.<br>Set to `0` to skip.                                                        | 1             |
 
 :gift: A few **`SEAFLY_PROMPT_PREFIX`** examples:
 

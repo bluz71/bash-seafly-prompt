@@ -34,8 +34,8 @@ fi
 # Default layout settings.
 : ${SEAFLY_LAYOUT:=1}
 : ${SEAFLY_MULTILINE:=0}
-: ${SEAFLY_SHOW_USER:=0}
 : ${SEAFLY_SHOW_HOST:=1}
+: ${SEAFLY_SHOW_USER:=0}
 
 # Default symbols used in the prompt.
 : ${SEAFLY_PROMPT_SYMBOL:="❯"}
@@ -235,6 +235,13 @@ _seafly_command_prompt() {
     local prompt_start
     if [[ $SEAFLY_SHOW_USER -eq 1 && $SEAFLY_SHOW_HOST -eq 1 ]]; then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h "
+    elif [[ $SEAFLY_SHOW_USER -eq 1 && $SEAFLY_SHOW_HOST -eq 2 ]]; then
+        if [[ -n $SSH_CONNECTION ]]; then
+            prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h "
+        fi
+        # Else, show nothing since we are not in an SSH session.
+    elif [[ $SEAFLY_SHOW_HOST -eq 2 && -n $SSH_CONNECTION ]]; then
+        prompt_start="\[$SEAFLY_HOST_COLOR\]\h "
     elif (( SEAFLY_SHOW_USER == 1 )); then
         prompt_start="\[$SEAFLY_HOST_COLOR\]\u "
     elif (( SEAFLY_SHOW_HOST == 1 )); then
