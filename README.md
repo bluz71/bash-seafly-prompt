@@ -29,13 +29,13 @@ _seafly_ is a prompt that displays the following segments when using the
 default layout:
 
 ```
-<Optional Prefix> <Optional User/Host> <Git Branch> <Git Indicators> <Current Path> <Prompt Symbol>
+<Optional Prefix> <Optional User/Host> <Current Path> <Git Branch> <Git Indicators> <Prompt Symbol>
 ```
 
 Note, when `SEAFLY_LAYOUT=2` is set the prompt will instead display as:
 
 ```
-<Optional Prefix> <Optional User/Host> <Current Path> <Git Branch> <Git Indicators> <Prompt Symbol>
+<Optional Prefix> <Optional User/Host> <Git Branch> <Git Indicators> <Current Path> <Prompt Symbol>
 ```
 
 _seafly_ can also display as a multiline prompt when `SEAFLY_MULTILINE=1` is
@@ -238,7 +238,7 @@ Note, a dash character denotes an unset default value.
 | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------| ------------- |
 | **`SEAFLY_PRE_COMMAND`**             | A command to run each time the prompt is displayed.<br>Please make sure any pre-command is very fast.<br>For example, `"history -a"`.                        | -             |
 | **`SEAFLY_PROMPT_PREFIX`**           | A shell script snippet to populate the _optional prefix_ segment.<br>Please make sure the script snippet is simple and fast.<br>Refer to the examples below. | -             |
-| **`SEAFLY_LAYOUT`**                  | Specify the preferred layout.<br>Layout `1` will display Git details followed by path.<br>Layout `2` will flip the Git details and path.                     | 1             |
+| **`SEAFLY_LAYOUT`**                  | Specify the preferred layout.<br>Layout `1` will display path followed Git details.<br>Layout `2` will flip the path and Git details.                        | 1             |
 | **`SEAFLY_MULTILINE`**               | Specify multiline layout.<br>`SEAFLY_MULTILINE=1` will display the prompt over multiple lines.                                                               | 0             |
 | **`SEAFLY_SHOW_USER`**               | Display the current user in the user/host segment.<br>Set to `1` to display the user.<br>Refer to `SEAFLY_SHOW_USERHOST_CONNECTED`.                          | 0             |
 | **`SEAFLY_SHOW_HOST`**               | Display the current hostname in the user/host segment.<br>Set to `0` to not display the host.<br>Ref to `SEAFLY_SHOW_USERHOST_CONNECTED`.                    | 1             |

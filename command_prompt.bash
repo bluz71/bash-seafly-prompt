@@ -255,9 +255,9 @@ _seafly_command_prompt() {
 
     local prompt_middle
     if (( SEAFLY_LAYOUT == 1 )); then
-        prompt_middle="\[$SEAFLY_GIT_COLOR\]$_seafly_git\[$SEAFLY_PATH_COLOR\]\w "
-    else
         prompt_middle="\[$SEAFLY_PATH_COLOR\]\w\[$SEAFLY_GIT_COLOR\] $_seafly_git"
+    else
+        prompt_middle="\[$SEAFLY_GIT_COLOR\]$_seafly_git\[$SEAFLY_PATH_COLOR\]\w "
     fi
     unset _seafly_git
 
