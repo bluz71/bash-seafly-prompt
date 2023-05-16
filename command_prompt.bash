@@ -36,7 +36,7 @@ fi
 : ${SEAFLY_MULTILINE:=0}
 : ${SEAFLY_SHOW_USER:=0}
 : ${SEAFLY_SHOW_HOST:=1}
-: ${SEAFLY_SHOW_ONLY_SSH:=0}
+: ${SEAFLY_SHOW_USERHOST_CONNECTED:=1}
 
 # Default symbols used in the prompt.
 : ${SEAFLY_PROMPT_SYMBOL:="❯"}
@@ -234,7 +234,7 @@ _seafly_command_prompt() {
     fi
 
     local prompt_start
-    if [[ $SEAFLY_SHOW_USERHOST_SSH -eq 0 ]] || [[ $SEAFLY_SHOW_USERHOST_SSH -eq 1 && -n $SSH_CONNECTION ]]; then
+    if [[ $SEAFLY_SHOW_USERHOST_CONNECTED -eq 0 ]] || [[ $SEAFLY_SHOW_USERHOST_CONNECTED -eq 1 && -n $SSH_CONNECTION ]]; then
         if [[ $SEAFLY_SHOW_USER -eq 1 && $SEAFLY_SHOW_HOST -eq 1 ]]; then
             prompt_start="\[$SEAFLY_HOST_COLOR\]\u@\h "
         elif (( SEAFLY_SHOW_USER == 1 )); then
