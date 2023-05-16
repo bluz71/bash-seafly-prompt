@@ -14,7 +14,7 @@ if [[ $TERM != *-256color ]] && [[ $TERM != alacritty* ]] && [[ $TERM != *-kitty
 fi
 
 # Default colors used in the prompt.
-: ${SEAFLY_PREFIX_COLOR:=$(tput setaf 79)}
+: ${SEAFLY_PREFIX_COLOR:=$(tput setaf 217)}
 : ${SEAFLY_NORMAL_COLOR:=$(tput setaf 111)}
 : ${SEAFLY_ALERT_COLOR:=$(tput setaf 203)}
 : ${SEAFLY_HOST_COLOR:=$(tput setaf 255)}
