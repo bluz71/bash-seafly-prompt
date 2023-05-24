@@ -3,7 +3,7 @@
 
 _seafly_ is a clean and fast command prompt for the
 [Bash](https://www.gnu.org/software/bash) shell heavily inspired by the [Pure
-ZSH prompt](https://github.com/sindresorhus/pure).
+ZSH](https://github.com/sindresorhus/pure) prompt.
 
 :rocket: For maximum repository performance, _seafly_ will use, if available,
 either the [git-status-fly](https://github.com/bluz71/git-status-fly) or
@@ -227,19 +227,19 @@ through environment variables.
 
 Note, a dash character denotes an unset default value.
 
-### Behaviour
+### Environment Variables
 
-| Option                               | Description                                                                                                                                                  | Default Value |
-| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------| ------------- |
-| **`SEAFLY_LAYOUT`**                  | Specify the preferred layout.<br>Layout `1` will display path followed Git details.<br>Layout `2` will flip the path and Git details.                        | 1             |
-| **`SEAFLY_MULTILINE`**               | Specify multiline layout.<br>`SEAFLY_MULTILINE=1` will display the prompt over multiple lines.                                                               | 0             |
-| **`SEAFLY_SHOW_USER`**               | Display the current user in the user/host segment.<br>Set to `1` to display the user.<br>Refer to `SEAFLY_SHOW_USERHOST_CONNECTED`.                          | 0             |
-| **`SEAFLY_SHOW_HOST`**               | Display the current hostname in the user/host segment.<br>Set to `0` to not display the host.<br>Ref to `SEAFLY_SHOW_USERHOST_CONNECTED`.                    | 1             |
-| **`SEAFLY_SHOW_USERHOST_CONNECTED`** | Display the user/host segment only when connected to external hosts.<br>Set to `0` to always the user/host segment.                                          | 1             |
-| **`PROMPT_DIRTRIM`**                 | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path.                                     | 4             |
-| **`GIT_PS1_SHOWDIRTYSTATE`**         | Indicate the presence of Git modifications.<br>Set to `0` to skip.                                                                                           | 1             |
-| **`GIT_PS1_SHOWSTASHSTATE`**         | Indicate the presence of Git stashes.<br>Set to `0` to skip.                                                                                                 | 1             |
-| **`GIT_PS1_SHOWUPSTREAM`**           | Indicate differences exist between HEAD and upstream in a Git remote-tracking branch.<br>Set to `0` to skip.                                                 | 1             |
+| Option                               | Description                                                                                                                               | Default Value |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------| ------------- |
+| **`SEAFLY_LAYOUT`**                  | Specify the preferred layout.<br>Layout `1` will display path followed Git details.<br>Layout `2` will flip the path and Git details.     | 1             |
+| **`SEAFLY_MULTILINE`**               | Specify multiline layout.<br>`SEAFLY_MULTILINE=1` will display the prompt over multiple lines.                                            | 0             |
+| **`SEAFLY_SHOW_USER`**               | Display the current user in the user/host segment.<br>Set to `1` to display the user.<br>Refer to `SEAFLY_SHOW_USERHOST_CONNECTED`.       | 0             |
+| **`SEAFLY_SHOW_HOST`**               | Display the current hostname in the user/host segment.<br>Set to `0` to not display the host.<br>Ref to `SEAFLY_SHOW_USERHOST_CONNECTED`. | 1             |
+| **`SEAFLY_SHOW_USERHOST_CONNECTED`** | Display the user/host segment only when connected to external hosts.<br>Set to `0` to always the user/host segment.                       | 1             |
+| **`PROMPT_DIRTRIM`**                 | Shorten the current directory path to a set maximum number of components.<br>Set to `0` to not shorten the current path.                  | 4             |
+| **`GIT_PS1_SHOWDIRTYSTATE`**         | Indicate the presence of Git modifications.<br>Set to `0` to skip.                                                                        | 1             |
+| **`GIT_PS1_SHOWSTASHSTATE`**         | Indicate the presence of Git stashes.<br>Set to `0` to skip.                                                                              | 1             |
+| **`GIT_PS1_SHOWUPSTREAM`**           | Indicate differences exist between HEAD and upstream in a Git remote-tracking branch.<br>Set to `0` to skip.                              | 1             |
 
 ### Hooks
 
