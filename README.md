@@ -2,13 +2,8 @@
 ========
 
 _seafly_ is a clean and fast command prompt for the
-[Bash](https://www.gnu.org/software/bash) shell.
-
-Inspiration provided by:
-
-- [Pure ZSH](https://github.com/sindresorhus/pure)
-- [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt)
-- [sapegin/dotfiles Bash prompt](https://github.com/sapegin/dotfiles/blob/dd063f9c30de7d2234e8accdb5272a5cc0a3388b/includes/bash_prompt.bash)
+[Bash](https://www.gnu.org/software/bash) shell heavily inspired by the [Pure
+ZSH prompt](https://github.com/sindresorhus/pure).
 
 :rocket: For maximum repository performance, _seafly_ will use, if available,
 either the [git-status-fly](https://github.com/bluz71/git-status-fly) or
@@ -234,10 +229,8 @@ Note, a dash character denotes an unset default value.
 
 ### Behaviour
 
-| Option                         | Description                                                                                                                                                  | Default Value |
+| Option                               | Description                                                                                                                                                  | Default Value |
 | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------| ------------- |
-| **`SEAFLY_PRE_COMMAND`**             | A command to run each time the prompt is displayed.<br>Please make sure any pre-command is very fast.<br>For example, `"history -a"`.                        | -             |
-| **`SEAFLY_PROMPT_PREFIX`**           | A shell script snippet to populate the _optional prefix_ segment.<br>Please make sure the script snippet is simple and fast.<br>Refer to the examples below. | -             |
 | **`SEAFLY_LAYOUT`**                  | Specify the preferred layout.<br>Layout `1` will display path followed Git details.<br>Layout `2` will flip the path and Git details.                        | 1             |
 | **`SEAFLY_MULTILINE`**               | Specify multiline layout.<br>`SEAFLY_MULTILINE=1` will display the prompt over multiple lines.                                                               | 0             |
 | **`SEAFLY_SHOW_USER`**               | Display the current user in the user/host segment.<br>Set to `1` to display the user.<br>Refer to `SEAFLY_SHOW_USERHOST_CONNECTED`.                          | 0             |
@@ -248,53 +241,39 @@ Note, a dash character denotes an unset default value.
 | **`GIT_PS1_SHOWSTASHSTATE`**         | Indicate the presence of Git stashes.<br>Set to `0` to skip.                                                                                                 | 1             |
 | **`GIT_PS1_SHOWUPSTREAM`**           | Indicate differences exist between HEAD and upstream in a Git remote-tracking branch.<br>Set to `0` to skip.                                                 | 1             |
 
-:gift: A few **`SEAFLY_PROMPT_PREFIX`** examples:
+### Hooks
 
--   When in an active Python [Virtual Environment](
-    https://realpython.com/python-virtual-environments-a-primer)
-    display the name of the current environment within parenthesis:
+| Hook                             | Description                                                                                                      | Default Value |
+| ---------------------------------| -----------------------------------------------------------------------------------------------------------------| ------------- |
+| **`seafly_pre_command_hook`**    | A function hook to run each time the prompt is displayed.<br>Please make sure any hook is fast.                  | -             |
+| **`seafly_prompt_prefix_hook`**  | A function hook to populate the _optional prefix_ segment.<br>Please also make sure the hook is simple and fast. | -             |
 
-    ```sh
-    SEAFLY_PROMPT_PREFIX='if [[ -n $VIRTUAL_ENV ]]; then echo "($(basename $VIRTUAL_ENV))"; fi'
-    ```
+- A **`pre_command_hook`** example that appends and updates history each time
+  the prompt is executed:
 
--   When using the [Node Version Manager](https://github.com/nvm-sh/nvm) and
-    when in a JavaScript project display the name of the current JavaScript
-    version within parenthesis:
+  ```bash
+  seafly_pre_command_hook="seafly_pre_command"
 
-    ```sh
-    SEAFLY_PROMPT_PREFIX='if [[ -f Gemfile ]]; then echo "($(nvm current))"; fi'
-    ```
+  seafly_pre_command() {
+      history -a && history -n
+  }
+  ```
 
--   When using the [chruby](https://github.com/postmodern/chruby) Ruby version
-    manager and when in a Ruby project base directory display the current
-    Ruby version within parenthesis:
+- A **`prompt_prefix_hook`** example that displays the current Node version if
+  `package.json` file is present or displays the name of the current Python
+  virtual environment if one is active:
 
-    ```sh
-    SEAFLY_PROMPT_PREFIX='if [[ -f Gemfile ]]; then echo "($(chruby | grep "*" | cut -d" " -f3))"; fi'
-    ```
+  ```bash
+  seafly_prompt_prefix_hook="seafly_prompt_prefix"
 
-:bomb: In certain Git repositories, calculating dirty-state can be slow,
-either due to the size of the repository or the speed of the file-system
-hosting the repository. If so, the prompt may render slowly. One can either
-set `GIT_PS1_SHOWDIRTYSTATE=0` to disable dirty-state indication for all
-repositories, or if only a few repositories have performance issues then one
-can do the following to skip dirty-state indication on a per-repository basis:
-
-```sh
-git config bash.showDirtyState false
-```
-
-:hourglass: The `manyFiles` feature introduced in Git `2.24` may prove useful
-to improve performance for very large repositories:
-
-```sh
-git config feature.manyFiles true
-```
-
-:rocket: Note, for best prompt rendering performance, when in Git repositories,
-please install and use the [gitstatus](https://github.com/romkatv/gitstatus)
-command.
+  seafly_prompt_prefix() {
+      if [[ -f package.json ]]; then
+          echo "($(nvm current))"
+      elif [[ -n $VIRTUAL_ENV ]]; then
+          echo "($(basename $VIRTUAL_ENV))"
+      fi
+  }
+  ```
 
 ### Symbols
 

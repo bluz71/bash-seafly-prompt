@@ -53,11 +53,6 @@ fi
 # Location of [gitstatus](https://github.com/romkatv/gitstatus).
 : ${SEAFLY_GITSTATUS_DIR:="$HOME/.gitstatus"}
 
-# Optional command to run before every prompt; output is ignored.
-: ${SEAFLY_PRE_COMMAND:=""}
-# Optional command that outputs as the prompt prefix.
-: ${SEAFLY_PROMPT_PREFIX:=""}
-
 # Collate Git details using the
 # [git-status-fly](https://github.com/bluz71/git-status-fly) utility.
 #
@@ -221,11 +216,14 @@ _seafly_git_command() {
 }
 
 _seafly_command_prompt() {
-    # Run the pre-command if set.
-    eval $SEAFLY_PRE_COMMAND
+    # Run the pre-command hook if it is set, if not set this will evaluate to a
+    # no-op.
+    "${seafly_pre_command_hook-:}"
 
     local prompt_prefix
-    local prefix_value=$(eval $SEAFLY_PROMPT_PREFIX)
+    # Run and save the output from the prompt-prefix hook if it is set, if not
+    # set prefix-value output will evaluate to a no-op.
+    local prefix_value=$("${seafly_prompt_prefix_hook-:}")
     if [[ -n $prefix_value ]]; then
         prompt_prefix="\[$SEAFLY_PREFIX_COLOR\]$prefix_value "
     fi
