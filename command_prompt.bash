@@ -222,7 +222,7 @@ _seafly_command_prompt() {
 
     local prompt_prefix
     # Run and save the output from the prompt-prefix hook if it is set, if not
-    # set prefix-value output will evaluate to a no-op.
+    # set prefix-value will evaluate to a no-op.
     local prefix_value=$("${seafly_prompt_prefix_hook-:}")
     if [[ -n $prefix_value ]]; then
         prompt_prefix="\[$SEAFLY_PREFIX_COLOR\]$prefix_value "
