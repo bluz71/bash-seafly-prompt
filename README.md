@@ -243,10 +243,10 @@ Note, a dash character denotes an unset default value.
 
 ### Hooks
 
-| Hook                             | Description                                                                                                      | Default Value |
-| ---------------------------------| -----------------------------------------------------------------------------------------------------------------| ------------- |
-| **`seafly_pre_command_hook`**    | A function hook to run each time the prompt is displayed.<br>Please make sure any hook is fast.                  | -             |
-| **`seafly_prompt_prefix_hook`**  | A function hook to populate the _optional prefix_ segment.<br>Please also make sure the hook is simple and fast. | -             |
+| Hook                             | Description                                                                                                 | Default Value |
+| ---------------------------------| ------------------------------------------------------------------------------------------------------------| ------------- |
+| **`seafly_pre_command_hook`**    | A function hook to run each time the prompt is displayed.<br>Please make sure the hook is fast.             | -             |
+| **`seafly_prompt_prefix_hook`**  | A function hook to populate the _optional prefix_ segment.<br>Please make sure the hook is simple and fast. | -             |
 
 - A **`pre_command_hook`** example that appends and updates history each time
   the prompt is executed:
@@ -261,7 +261,7 @@ Note, a dash character denotes an unset default value.
 
 - A **`prompt_prefix_hook`** example that displays the current Node version if
   `package.json` file is present or displays the name of the current Python
-  virtual environment if one is active:
+  virtual environment if one is active in the _optional prefix_ segment:
 
   ```bash
   seafly_prompt_prefix_hook="seafly_prompt_prefix"
