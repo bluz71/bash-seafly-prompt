@@ -259,8 +259,9 @@ _seafly_command_prompt() {
     fi
     unset _seafly_git
 
-    # Normal prompt indicates that the last command ran successfully.
-    # Alert prompt indicates that the last command failed.
+    # Normal prompt symbol color indicates that the last command ran
+    # successfully whilst alert prompt symbol color indicates that the last
+    # command failed.
     _seafly_colors=("$SEAFLY_ALERT_COLOR" "$SEAFLY_NORMAL_COLOR")
 
     local prompt_end="\[\${_seafly_colors[\$((!\$?))]}\]$SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
