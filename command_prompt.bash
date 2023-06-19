@@ -58,28 +58,28 @@ fi
 #
 _seafly_git_status_fly() {
     . <(git-status-fly)
-    [[ -n "$GSF_REPOSITORY" ]] || return
+    [[ -z "$GSF_REPOSITORY" ]] && return
 
     # We are in a Git repository.
     local branch=$GSF_BRANCH
     if [[ $branch == "HEAD" ]]; then
         branch="detached*$(git rev-parse --short HEAD 2>/dev/null)"
     fi
-    branch=${branch//\\/\\\\}  # Escape backslashes
-    branch=${branch//\$/\\\$}  # Escape dollars
+    branch=${branch//\\/\\\\} # Escape backslashes
+    branch=${branch//\$/\\\$} # Escape dollars
 
     local dirty
     local staged
     if [[ $branch != "detached*" &&
           $GIT_PS1_SHOWDIRTYSTATE -ne 0 &&
           $(git config --bool bash.showDirtyState) != "false" ]]; then
-        [[ -z $GSF_DIRTY ]] || dirty=$SEAFLY_GIT_DIRTY
-        [[ -z $GSF_STAGED ]] || staged=$SEAFLY_GIT_STAGED
+        [[ -n $GSF_DIRTY ]] && dirty=$SEAFLY_GIT_DIRTY
+        [[ -n $GSF_STAGED ]] && staged=$SEAFLY_GIT_STAGED
     fi
 
     local stash
     if [[ $GIT_PS1_SHOWSTASHSTATE -ne 0 ]]; then
-        [[ -z $GSF_STASH ]] || stash=$SEAFLY_GIT_STASH
+        [[ -n $GSF_STASH ]] && stash=$SEAFLY_GIT_STASH
     fi
 
     local upstream
@@ -123,8 +123,8 @@ _seafly_gitstatus() {
     if [[ -z $branch ]]; then
         branch="detached*$(git rev-parse --short HEAD 2>/dev/null)"
     fi
-    branch=${branch//\\/\\\\}  # Escape backslashes
-    branch=${branch//\$/\\\$}  # Escape dollars
+    branch=${branch//\\/\\\\} # Escape backslashes
+    branch=${branch//\$/\\\$} # Escape dollars
 
     local dirty
     local staged
@@ -175,8 +175,8 @@ _seafly_git_command() {
     if [[ $branch == "HEAD" ]]; then
         branch="detached*$(git rev-parse --short HEAD 2>/dev/null)"
     fi
-    branch=${branch//\\/\\\\}  # Escape backslashes
-    branch=${branch//\$/\\\$}  # Escape dollars
+    branch=${branch//\\/\\\\} # Escape backslashes
+    branch=${branch//\$/\\\$} # Escape dollars
 
     local dirty
     local staged
@@ -274,7 +274,7 @@ _seafly_command_prompt() {
 
 # Use [git-status-fly](https://github.com/bluz71/git-status-fly) if it is
 # available.
-if [[ -x $(command -v git-status-fly) ]]; then
+if [[ -x $(command -v git-status-fly 2>/dev/null) ]]; then
     export SEAFLY_GIT_STATUS_FLY=1
 # Else use [gitstatus](https://github.com/romkatv/gitstatus) if it is available.
 elif [[ -r $SEAFLY_GITSTATUS_DIR/gitstatus.plugin.sh ]]; then
