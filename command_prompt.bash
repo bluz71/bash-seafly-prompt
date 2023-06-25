@@ -15,7 +15,7 @@ fi
 
 # Default colors used in the prompt.
 : ${SEAFLY_PREFIX_COLOR:=$(tput setaf 217)}
-: ${SEAFLY_NORMAL_COLOR:=$(tput setaf 111)}
+: ${SEAFLY_SUCCESS_COLOR:=$(tput setaf 111)}
 : ${SEAFLY_ALERT_COLOR:=$(tput setaf 203)}
 : ${SEAFLY_HOST_COLOR:=$(tput setaf 255)}
 : ${SEAFLY_GIT_COLOR:=$(tput setaf 147)}
@@ -99,7 +99,7 @@ _seafly_git_status_fly() {
     if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
         spacer=" "
     fi
-    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
+    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_SUCCESS_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
 }
 
 # Collate Git details using the
@@ -158,7 +158,7 @@ _seafly_gitstatus() {
     if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
         spacer=" "
     fi
-    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
+    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_SUCCESS_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
 }
 
 # Collate Git details using just the 'git' command.
@@ -212,7 +212,7 @@ _seafly_git_command() {
     if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
         spacer=" "
     fi
-    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_NORMAL_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
+    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_SUCCESS_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
 }
 
 _seafly_command_prompt() {
@@ -259,10 +259,10 @@ _seafly_command_prompt() {
     fi
     unset _seafly_git
 
-    # Normal prompt symbol color indicates that the last command ran
-    # successfully whilst alert prompt symbol color indicates that the last
+    # Success prompt symbol color indicates that the last command ran
+    # without issue whilst alert prompt symbol color indicates that the last
     # command failed.
-    _seafly_colors=("$SEAFLY_ALERT_COLOR" "$SEAFLY_NORMAL_COLOR")
+    _seafly_colors=("$SEAFLY_ALERT_COLOR" "$SEAFLY_SUCCESS_COLOR")
 
     local prompt_end="\[\${_seafly_colors[\$((!\$?))]}\]$SEAFLY_PROMPT_SYMBOL\[\$NOCOLOR\] "
     if (( SEAFLY_MULTILINE == 1 )); then
@@ -270,7 +270,7 @@ _seafly_command_prompt() {
     fi
 
     PS1="$prompt_prefix$prompt_start$prompt_middle$prompt_end"
-    PS2="\[$SEAFLY_NORMAL_COLOR\]$SEAFLY_PS2_PROMPT_SYMBOL\[\$NOCOLOR\] "
+    PS2="\[$SEAFLY_SUCCESS_COLOR\]$SEAFLY_PS2_PROMPT_SYMBOL\[\$NOCOLOR\] "
 }
 
 # Use [git-status-fly](https://github.com/bluz71/git-status-fly) if it is
