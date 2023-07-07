@@ -14,12 +14,12 @@ if [[ $TERM != *-256color ]] && [[ $TERM != alacritty* ]] && [[ $TERM != *-kitty
 fi
 
 # Default colors used in the prompt.
-: ${SEAFLY_PREFIX_COLOR:=$(tput setaf 217)}
+: ${SEAFLY_PREFIX_COLOR:="\e[38;5;217m"}
 : ${SEAFLY_SUCCESS_COLOR:=$(tput setaf 111)}
 : ${SEAFLY_ALERT_COLOR:=$(tput setaf 203)}
-: ${SEAFLY_HOST_COLOR:=$(tput setaf 255)}
-: ${SEAFLY_GIT_COLOR:=$(tput setaf 147)}
-: ${SEAFLY_PATH_COLOR:=$(tput setaf 114)}
+: ${SEAFLY_HOST_COLOR:="\e[38;5;255m"}
+: ${SEAFLY_GIT_COLOR:="\e[38;5;147m"}
+: ${SEAFLY_PATH_COLOR:="\e[38;5;114m"}
 : ${NOCOLOR:=$(tput sgr0)}
 
 # Shorten directory paths to a maximum of four components unless PROMPT_DIRTRIM
