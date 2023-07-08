@@ -15,12 +15,12 @@ fi
 
 # Default colors used in the prompt.
 : ${SEAFLY_PREFIX_COLOR:="\e[38;5;217m"}
-: ${SEAFLY_SUCCESS_COLOR:=$(tput setaf 111)}
-: ${SEAFLY_ALERT_COLOR:=$(tput setaf 203)}
+: ${SEAFLY_SUCCESS_COLOR:=$(echo -ne '\e[38;5;111m')}
+: ${SEAFLY_ALERT_COLOR:=$(echo -ne '\e[38;5;203m')}
 : ${SEAFLY_HOST_COLOR:="\e[38;5;255m"}
 : ${SEAFLY_GIT_COLOR:="\e[38;5;147m"}
 : ${SEAFLY_PATH_COLOR:="\e[38;5;114m"}
-: ${NOCOLOR:=$(tput sgr0)}
+: ${NOCOLOR:=$(echo -ne '\e[m')}
 
 # Shorten directory paths to a maximum of four components unless PROMPT_DIRTRIM
 # has already been set.

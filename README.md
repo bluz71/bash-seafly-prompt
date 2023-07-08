@@ -296,14 +296,14 @@ The default color values listed below, such as `111` and `203`, derive from
 xterm 256 color values. Please refer to [this
 chart](https://jonasjacek.github.io/colors) when customizing _seafly_ colors.
 
-| Option                     | Description                                  | Default Value       | Color                                             |
-| -------------------------- | -------------------------------------------- | ------------------- | ------------------------------------------------- |
-| **`SEAFLY_PREFIX_COLOR`**  | _Optional prefix_ segment                    | `$(tput setaf 217)` | ![normal](https://place-hold.it/32/5fd7af?text=+) |
-| **`SEAFLY_SUCCESS_COLOR`** | Standard prompt and certain Git indicators   | `$(tput setaf 111)` | ![normal](https://place-hold.it/32/87afff?text=+) |
-| **`SEAFLY_ALERT_COLOR`**   | Alert prompt and Git dirty indicator         | `$(tput setaf 203)` | ![normal](https://place-hold.it/32/ff5f5f?text=+) |
-| **`SEAFLY_HOST_COLOR`**    | Host segment                                 | `$(tput setaf 255)` | ![normal](https://place-hold.it/32/eeeeee?text=+) |
-| **`SEAFLY_GIT_COLOR`**     | Git branch, stash and optional prefix/suffix | `$(tput setaf 147)` | ![normal](https://place-hold.it/32/afafff?text=+) |
-| **`SEAFLY_PATH_COLOR`**    | Current directory path                       | `$(tput setaf 114)` | ![normal](https://place-hold.it/32/87d787?text=+) |
+| Option                     | Description                                  | Default Value | Color                                             |
+| -------------------------- | -------------------------------------------- | ------------- | ------------------------------------------------- |
+| **`SEAFLY_PREFIX_COLOR`**  | _Optional prefix_ segment                    | `217`         | ![normal](https://place-hold.it/32/5fd7af?text=+) |
+| **`SEAFLY_SUCCESS_COLOR`** | Standard prompt and certain Git indicators   | `111`         | ![normal](https://place-hold.it/32/87afff?text=+) |
+| **`SEAFLY_ALERT_COLOR`**   | Alert prompt and Git dirty indicator         | `203`         | ![normal](https://place-hold.it/32/ff5f5f?text=+) |
+| **`SEAFLY_HOST_COLOR`**    | Host segment                                 | `255`         | ![normal](https://place-hold.it/32/eeeeee?text=+) |
+| **`SEAFLY_GIT_COLOR`**     | Git branch, stash and optional prefix/suffix | `147`         | ![normal](https://place-hold.it/32/afafff?text=+) |
+| **`SEAFLY_PATH_COLOR`**    | Current directory path                       | `114`         | ![normal](https://place-hold.it/32/87d787?text=+) |
 
 Sponsor
 -------
