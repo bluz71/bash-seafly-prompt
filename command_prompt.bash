@@ -67,6 +67,8 @@ _seafly_git_status_fly() {
     fi
     branch=${branch//\\/\\\\} # Escape backslashes
     branch=${branch//\$/\\\$} # Escape dollars
+    local ellipsis="…" # Truncate, with ellipsis, long branch names
+    branch="${branch:0:30}${ellipsis:0:$(( ${#branch} > 30 ))}"
 
     local dirty
     local staged
@@ -125,6 +127,8 @@ _seafly_gitstatus() {
     fi
     branch=${branch//\\/\\\\} # Escape backslashes
     branch=${branch//\$/\\\$} # Escape dollars
+    local ellipsis="…" # Truncate, with ellipsis, long branch names
+    branch="${branch:0:30}${ellipsis:0:$(( ${#branch} > 30 ))}"
 
     local dirty
     local staged
@@ -177,6 +181,8 @@ _seafly_git_command() {
     fi
     branch=${branch//\\/\\\\} # Escape backslashes
     branch=${branch//\$/\\\$} # Escape dollars
+    local ellipsis="…" # Truncate, with ellipsis, long branch names
+    branch="${branch:0:30}${ellipsis:0:$(( ${#branch} > 30 ))}"
 
     local dirty
     local staged
