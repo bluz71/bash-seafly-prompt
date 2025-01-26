@@ -50,13 +50,10 @@ fi
 : ${SEAFLY_GIT_BEHIND:="↓"}
 : ${SEAFLY_GIT_DIVERGED:="↕"}
 
-# Location of [gitstatus](https://github.com/romkatv/gitstatus).
-: ${SEAFLY_GITSTATUS_DIR:="$HOME/.gitstatus"}
-
 # Collate Git details using the
 # [git-status-fly](https://github.com/bluz71/git-status-fly) utility.
 #
-_seafly_git_status_fly() {
+_seafly_git_status_parser() {
     . <(git-status-fly)
     [[ -z "$GSF_REPOSITORY" ]] && return
 
@@ -93,67 +90,6 @@ _seafly_git_status_fly() {
         elif (( GSF_UPSTREAM < 0 )); then
             upstream=$SEAFLY_GIT_BEHIND
         elif (( GSF_UPSTREAM == 0 )); then
-            upstream="="
-        fi
-    fi
-
-    local spacer
-    if [[ -n $dirty || -n $staged || -n $stash || -n $upstream ]]; then
-        spacer=" "
-    fi
-    _seafly_git="$SEAFLY_GIT_PREFIX$branch$spacer\[$SEAFLY_ALERT_COLOR\]$dirty\[$SEAFLY_SUCCESS_COLOR\]$staged$upstream\[$SEAFLY_GIT_COLOR\]$stash$SEAFLY_GIT_SUFFIX "
-}
-
-# Collate Git details using the
-# [gitstatus](https://github.com/romkatv/gitstatus) command.
-#
-_seafly_gitstatus() {
-    local flags
-    # Note, gitstatus will automatically set '-p' if the local repository has
-    # set 'bash.showDirtyState' to false.
-    [[ $GIT_PS1_SHOWDIRTYSTATE -eq 0  ]] && flags=-p # Avoid unnecessary work
-    if ! hash gitstatus_query 2>/dev/null || ! gitstatus_query $flags; then
-        # Either gitstatus_query does not exist or it failed, use fallback
-        # git command instead.
-        _seafly_git_command
-        return
-    fi
-    [[ $VCS_STATUS_RESULT == ok-sync ]] || return
-
-    # We are in a Git repository and gitstatus_query succeeded.
-    local branch=$VCS_STATUS_LOCAL_BRANCH
-    if [[ -z $branch ]]; then
-        branch="detached*$(git rev-parse --short HEAD 2>/dev/null)"
-    fi
-    branch=${branch//\\/\\\\} # Escape backslashes
-    branch=${branch//\$/\\\$} # Escape dollars
-    local ellipsis="…" # Truncate, with ellipsis, long branch names
-    branch="${branch:0:30}${ellipsis:0:$(( ${#branch} > 30 ))}"
-
-    local dirty
-    local staged
-    if [[ $GIT_PS1_SHOWDIRTYSTATE -ne 0 && $VCS_STATUS_HAS_UNSTAGED -eq 1 ]]; then
-        dirty=$SEAFLY_GIT_DIRTY
-    fi
-    if [[ $GIT_PS1_SHOWDIRTYSTATE -ne 0 && $VCS_STATUS_HAS_STAGED -eq 1 ]]; then
-        staged=$SEAFLY_GIT_STAGED
-    fi
-
-    local stash
-    if [[ $GIT_PS1_SHOWSTASHSTATE -ne 0 && $VCS_STATUS_STASHES -gt 0 ]]; then
-        stash=$SEAFLY_GIT_STASH
-    fi
-
-    local upstream
-    if [[ $GIT_PS1_SHOWUPSTREAM -ne 0 ]]; then
-        if [[ $VCS_STATUS_COMMITS_AHEAD -gt 0 &&
-              $VCS_STATUS_COMMITS_BEHIND -gt 0 ]]; then
-            upstream=$SEAFLY_GIT_DIVERGED
-        elif (( VCS_STATUS_COMMITS_AHEAD > 0 )); then
-            upstream=$SEAFLY_GIT_AHEAD
-        elif (( VCS_STATUS_COMMITS_BEHIND > 0 )); then
-            upstream=$SEAFLY_GIT_BEHIND
-        elif [[ -n $VCS_STATUS_REMOTE_NAME ]]; then
             upstream="="
         fi
     fi
@@ -250,9 +186,7 @@ _seafly_command_prompt() {
 
     # Collate Git details, if applicable, for the current directory.
     if (( SEAFLY_GIT_STATUS_FLY == 1 )); then
-        _seafly_git_status_fly
-    elif (( SEAFLY_GITSTATUS == 1 )); then
-        _seafly_gitstatus
+        _seafly_git_status_parser
     else
         _seafly_git_command
     fi
@@ -283,11 +217,6 @@ _seafly_command_prompt() {
 # available.
 if [[ -x $(command -v git-status-fly 2>/dev/null) ]]; then
     export SEAFLY_GIT_STATUS_FLY=1
-# Else use [gitstatus](https://github.com/romkatv/gitstatus) if it is available.
-elif [[ -r $SEAFLY_GITSTATUS_DIR/gitstatus.plugin.sh ]]; then
-    source "$SEAFLY_GITSTATUS_DIR"/gitstatus.plugin.sh
-    gitstatus_stop && gitstatus_start -c 0 -d 0
-    export SEAFLY_GITSTATUS=1
 fi
 
 # Bind and call the '_seafly_command_prompt' function as the Bash prompt.

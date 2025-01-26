@@ -6,9 +6,8 @@ _seafly_ is a clean and fast command prompt for the
 ZSH](https://github.com/sindresorhus/pure) prompt.
 
 :rocket: For maximum repository performance, _seafly_ will use, if available,
-either the [git-status-fly](https://github.com/bluz71/git-status-fly) or
-[gitstatus](https://github.com/romkatv/gitstatus) utilities. Note, it is
-strongly recommened to either utility to accelerate prompt performance.
+the [git-status-fly](https://github.com/bluz71/git-status-fly) utility. Note, it
+is strongly recommened to use this utility to accelerate prompt performance.
 
 Screenshot
 ----------
@@ -140,43 +139,18 @@ git-status-fly
 --------------
 
 The [git-status-fly](https://github.com/bluz71/git-status-fly) utility is a
-simple [Rust](https://www.rust-lang.org) implemented `git status` processor.
-Parsing the output of `git status` using shell commands, such as `grep` and
+simple [Rust](https://www.rust-lang.org) implemented `git status` parser.
+Processing the output of `git status` using shell commands, such as `grep` and
 `awk`, is much slower than using an optimized binary such as _git-status-fly_.
 
 Install the _git-status-fly_ somewhere in the current `$PATH`.
 
-gitstatus
----------
-
-The [gitstatus](https://github.com/romkatv/gitstatus) utility, a
-high-performance alternative to the `git status` command, is designed
-specifically for low-latency command prompt usage.
-
-Install _gitstatus_:
-
-```sh
-git clone --depth 1 https://github.com/romkatv/gitstatus.git ~/.gitstatus
-```
-
-If _gitstatus_ is already installed in an alternate directory then please export
-its location in an environment variable:
-
-```sh
-export SEAFLY_GITSTATUS_DIR=/location/of/gitstatus
-```
-
-Be aware, unlike _git-status-fly_ which is just a standard executable run once
-per prompt update, _gitstatus_ on the other hand is a daemon process that will
-launch once on shell startup and will then be interacted with via IPC per prompt
-update. The _gitstatus_ daemon startup will incur a 5 to 10ms cost.
-
 Git Performance
 ---------------
 
-_seafly_ provides three ways to gather Git status, either of the two previous
-utilities: _git-status-fly_, _gitstatus_, or a fallback method which collates
-details using just the `git` command.
+_seafly_ provides two ways to gather Git status, the previously mentioned
+_git-status-fly_, or a fallback method which collates details using just the
+`git` command.
 
 Which to use? See the following performance results and decide.
 
@@ -189,23 +163,23 @@ Performance metrics are listed for the following four repositories:
 
 Listed is the average time to compute the prompt function.
 
-Mid-range Linux desktop Core i5 with SATA SSD:
+Linux desktop with NVMe storage:
 
-| Repository     | `git-status-fly` | `gitstatus` | `git` fallback |
-|----------------|------------------|-------------|----------------|
-| _dotfiles_     | `16ms`           | `12ms`      | `28ms`         |
-| _rails_        | `21ms`           | `15ms`      | `33ms`         |
-| _linux_(*)     | `61ms`           | `42ms`      | `80ms`         |
-| _chromium_ (*) | `260ms`          | `160ms`     | `305ms`        |
+| Repository     | `git-status-fly` | `git-status-snap` | `git` fallback |
+|----------------|------------------|-------------------|----------------|
+| _dotfiles_     | `5ms`            | `6ms`             | `11ms`         |
+| _rails_        | `7ms`            | `7ms`             | `14ms`         |
+| _linux_(*)     | `26ms`           | `26ms`            | `38ms`         |
+| _chromium_ (*) | `122ms`          | `123ms`           | `154ms`        |
 
 M1 Macbook Air:
 
-| Repository     | `git-status-fly` | `gitstatus` | `git` fallback |
-|----------------|------------------|-------------|----------------|
-| _dotfiles_     | `32ms`           | `12ms`      | `61ms`         |
-| _rails_        | `45ms`           | `29ms`      | `73ms`         |
-| _linux_ (!)    | `60ms`           | `165ms`     | `105ms`         |
-| _chromium_ (!) | `102ms`          | `2500ms`    | `155ms`        |
+| Repository     | `git-status-fly` | `git-status-snap` | `git` fallback |
+|----------------|------------------|-------------------|----------------|
+| _dotfiles_     | `33ms`           | `39ms`            | `61ms`         |
+| _rails_        | `39ms`           | `43ms`            | `73ms`         |
+| _linux_ (!)    | `60ms`           | `64ms`            | `105ms`        |
+| _chromium_ (!) | `103ms`          | `108ms`           | `155ms`        |
 
 - **(*)**, the `git config feature.manyFiles true` option was enabled  as
   [documented here](https://github.blog/2019-11-03-highlights-from-git-2-24/)
