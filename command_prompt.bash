@@ -191,9 +191,10 @@ _seafly_command_prompt() {
 
     # Collate Git details, if applicable, for the current directory.
     if (( SEAFLY_GIT_STATUS_FLY == 1 || SEAFLY_GIT_STATUS_SNAP == 1 )); then
-        # Use either git-status-fly or git-status-snap.
+        # Use either git-status-fly or git-status-snap utilities.
         _seafly_git_status_parser
-    elsthe Fallback to the 'git' command, this will be slower.
+    else
+       # Use the fallback 'git' command, this will be much slower.
         _seafly_git_command
     fi
 
