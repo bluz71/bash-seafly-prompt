@@ -6,8 +6,10 @@ _seafly_ is a clean and fast command prompt for the
 ZSH](https://github.com/sindresorhus/pure) prompt.
 
 :rocket: For maximum repository performance, _seafly_ will use, if available,
-the [git-status-fly](https://github.com/bluz71/git-status-fly) utility. Note, it
-is strongly recommened to use this utility to accelerate prompt performance.
+either the [git-status-fly](https://github.com/bluz71/git-status-fly) or
+[git-status-snap](https://github.com/bluz71/git-status-snap) utilities. Note, it
+is strongly recommened to use either of these utilities to accelerate prompt
+performance.
 
 Screenshot
 ----------
@@ -145,12 +147,21 @@ Processing the output of `git status` using shell commands, such as `grep` and
 
 Install the _git-status-fly_ somewhere in the current `$PATH`.
 
+git-status-snap
+--------------
+
+The [git-status-snap](https://github.com/bluz71/git-status-snap) utility is an
+alternative [Crystal](https://crystal-lang.org) implemented `git status` parser.
+Implementation and behaviour is the same as _git-status-fly_.
+
+Install the _git-status-snap_ somewhere in the current `$PATH`.
+
 Git Performance
 ---------------
 
 _seafly_ provides two ways to gather Git status, the previously mentioned
-_git-status-fly_, or a fallback method which collates details using just the
-`git` command.
+_git-status-fly_ or _git-status-snap_ utilities, or a fallback method which
+collates details using just the `git` command.
 
 Which to use? See the following performance results and decide.
 

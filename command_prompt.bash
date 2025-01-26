@@ -50,11 +50,16 @@ fi
 : ${SEAFLY_GIT_BEHIND:="↓"}
 : ${SEAFLY_GIT_DIVERGED:="↕"}
 
-# Collate Git details using the
-# [git-status-fly](https://github.com/bluz71/git-status-fly) utility.
+# Collate Git details using either the
+# [git-status-fly](https://github.com/bluz71/git-status-fly) or
+# [git-status-snap](https://github.com/bluz71/git-status-snap) utilities.
 #
 _seafly_git_status_parser() {
-    . <(git-status-fly)
+    if (( SEAFLY_GIT_STATUS_FLY == 1 )); then
+        . <(git-status-fly)
+    else
+        . <(git-status-snap)
+    fi
     [[ -z "$GSF_REPOSITORY" ]] && return
 
     # We are in a Git repository.
@@ -185,9 +190,10 @@ _seafly_command_prompt() {
     fi
 
     # Collate Git details, if applicable, for the current directory.
-    if (( SEAFLY_GIT_STATUS_FLY == 1 )); then
+    if (( SEAFLY_GIT_STATUS_FLY == 1 || SEAFLY_GIT_STATUS_SNAP == 1 )); then
+        # Use either git-status-fly or git-status-snap.
         _seafly_git_status_parser
-    else
+    elsthe Fallback to the 'git' command, this will be slower.
         _seafly_git_command
     fi
 
@@ -217,6 +223,8 @@ _seafly_command_prompt() {
 # available.
 if [[ -x $(command -v git-status-fly 2>/dev/null) ]]; then
     export SEAFLY_GIT_STATUS_FLY=1
+elif [[ -x $(command -v git-status-snap 2>/dev/null) ]]; then
+    export SEAFLY_GIT_STATUS_SNAP=1
 fi
 
 # Bind and call the '_seafly_command_prompt' function as the Bash prompt.
